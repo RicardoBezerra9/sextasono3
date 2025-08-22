@@ -24,7 +24,7 @@
     <!-- Seção de hero com a proposta de valor -->
     <section class="hero">
       <div class="container">
-        <h1>A bateria do seu carro entregue e instalada em até 50 minutos</h1>
+        <h1>A bateria certa para seu carro</h1>
         <p class="highlight">Pague somente na entrega</p>
         <div class="hero-actions">
           <!-- Botões da seção hero com rótulos acessíveis -->
@@ -62,19 +62,27 @@
       <div class="modal-content">
         <!-- Botão para fechar o modal com rótulo acessível -->
         <button class="modal-close" id="closeSelection" aria-label="Fechar seleção">×</button>
-        <h3>Informe sua cidade</h3>
-        <div class="field-group">
-          <input
-            type="text"
-            id="cityInput"
-            placeholder="Buscar cidades"
-            list="cityList"
-          />
-          <datalist id="cityList"></datalist>
-        </div>
-        <!-- Botão para usar a localização atual com rótulo acessível -->
-        <button class="btn btn-primary" id="useLocation" aria-label="Usar minha localização">Usar minha localização</button>
-        <h3>Informe seu veículo</h3>
+<h3>Informe sua cidade</h3>
+
+<!-- bloco de cidade com o botão de localização embutido -->
+<div class="field-group city-group">
+  <input
+    type="text"
+    id="cityInput"
+    placeholder="Buscar cidades"
+    list="cityList"
+  />
+  <datalist id="cityList"></datalist>
+
+  <!-- botão discreto + ícone, dentro do mesmo bloco -->
+  <button type="button" class="btn-location" id="useLocation" title="Usar minha localização">
+    <img src="assets/icons/location.png" alt="" aria-hidden="true" />
+    <span>Localização</span>
+  </button>
+</div>
+
+<h3>Informe seu veículo</h3>
+
         <div class="field-group">
           <input
             type="text"
