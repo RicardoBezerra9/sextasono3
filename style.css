@@ -954,3 +954,36 @@ body {
     font-size: 0.75rem;
   }
 }
+/* ====== ajustes do modal: campo de cidade ====== */
+.city-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;              /* espaço entre input e botão */
+}
+
+.city-group input {
+  flex: 1;               /* input ocupa toda a largura disponível */
+}
+
+/* botão 'Localização' discreto e menor */
+.btn-location {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+  padding: 4px 8px;
+  border: 1px solid #d9d9d9;
+  background: #f6f7f8;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  transition: background .15s ease, border-color .15s ease, transform .05s ease;
+}
+
+.btn-location:hover { background: #f0f2f4; border-color: #cfcfcf; }
+.btn-location:active { transform: translateY(1px); }
+.btn-location img { width: 14px; height: 14px; display: block; }
+
+/* centrando o botão 'Selecionar' do modal */
+.select-btn-wrapper { display: flex; justify-content: center; }
