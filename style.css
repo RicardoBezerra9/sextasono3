@@ -20,6 +20,41 @@ body {
   background-color: #f5f5f5;
   color: #333;
 }
+/* ================================
+   Ajustes do modal - botão localização
+   ================================ */
+.city-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.city-group input {
+  flex: 1; /* input ocupa todo espaço disponível */
+}
+
+/* botão de localização apenas com ícone */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 6px;
+}
+
+.btn-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: #fff; /* ícone branco, igual ao texto do botão */
+}
+
+/* botão Selecionar centralizado */
+.select-btn-wrapper {
+  display: flex;
+  justify-content: center;
+}
 
 /* Estilos para a página de login */
 .login-page {
