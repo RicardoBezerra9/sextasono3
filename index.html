@@ -1,365 +1,159 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Baterias 1 – Delivery de Baterias</title>
-    <link rel="stylesheet" href="style.css" />
-  <style>.btn-painel{position:fixed;left:16px;bottom:16px;background:#6a1b9a;color:#fff;border:none;border-radius:10px;padding:12px 16px;box-shadow:0 6px 18px rgba(0,0,0,.15);font-weight:700;letter-spacing:.2px;cursor:pointer;z-index:9999} .btn-painel:hover{filter:brightness(1.05)}</style>
-  <link rel="stylesheet" href="assets/css/enhancements.css" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baterias1 - Entrega e Instalação</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-  <body>
-    <!-- Header com logotipo e botão de ação principal -->
-    <header class="header">
-      <div class="container header-content">
-        <div class="logo">
-          <!-- A logomarca é referenciada no mesmo diretório para simplificar o caminho -->
-          <img src="logo_baterias1.jpeg" alt="Logomarca Baterias 1" />
-        </div>
-        <!-- Botão de chamada principal com rótulo acessível -->
-        <button class="btn btn-primary" id="ctaStart" aria-label="Peça agora">Peça agora</button>
-      </div>
-    </header>
+<body>
 
-    <!-- Seção de hero com a proposta de valor -->
-    <section class="hero">
-      <div class="container">
-        <h1>A bateria do seu carro entregue e instalada em até 50 minutos</h1>
-        <p class="highlight">Pague somente na entrega</p>
-        <div class="hero-actions">
-          <!-- Botões da seção hero com rótulos acessíveis -->
-          <button class="btn btn-primary" id="heroOrder" aria-label="Peça agora">Peça agora</button>
-          <button class="btn btn-secondary" id="heroPrices" aria-label="Confira os preços">Confira os preços</button>
-        </div>
-      </div>
-    </section>
+  <!-- Cabeçalho -->
+  <header class="header">
+    <div class="container header-content">
+      <div class="logo"><img src="logo_baterias1.jpeg" alt="Baterias1" /></div>
+      <nav>
+        <a href="#steps">Como funciona</a>
+        <a href="#orderSection">Peça agora</a>
+      </nav>
+    </div>
+  </header>
 
-    <!-- Seção explicando o passo a passo do serviço -->
-    <section class="steps">
-      <div class="container">
-        <h2>Precisando de bateria para o seu carro?</h2>
-        <div class="step-list">
-          <div class="step-item">
-            <span class="step-number">1</span>
-            <p>Selecione o local da entrega e o modelo do veículo</p>
-          </div>
-          <div class="step-item">
-            <span class="step-number">2</span>
-            <p>Finalize o pedido e o pagamento será somente na entrega</p>
-          </div>
-          <div class="step-item">
-            <span class="step-number">3</span>
-            <p>A Bateria 1 vai até você com entrega e instalação grátis</p>
-          </div>
-        </div>
-        <!-- Botão de pedido na seção de etapas com rótulo acessível -->
-        <button class="btn btn-primary" id="stepsOrder" aria-label="Peça agora">Peça agora</button>
-      </div>
-    </section>
-
-    <!-- Modal de seleção de cidade e veículo -->
-    <div id="selectionModal" class="modal hidden">
-      <div class="modal-content">
-        <!-- Botão para fechar o modal com rótulo acessível -->
-        <button class="modal-close" id="closeSelection" aria-label="Fechar seleção">×</button>
-        <h3>Informe sua cidade</h3>
-        <div class="field-group">
-          <input
-            type="text"
-            id="cityInput"
-            placeholder="Buscar cidades"
-            list="cityList"
-          />
-          <datalist id="cityList"></datalist>
-        </div>
-        <!-- Botão para usar a localização atual com rótulo acessível -->
-        <button class="btn btn-primary" id="useLocation" aria-label="Usar minha localização">Usar minha localização</button>
-        <h3>Informe seu veículo</h3>
-        <div class="field-group">
-          <input
-            type="text"
-            id="vehicleInput"
-            placeholder="Marca, modelo, ano e versão"
-            list="vehicleList"
-            autocomplete="off"
-          />
-          <datalist id="vehicleList"></datalist>
-        </div>
-        <!-- Botão para confirmar o veículo selecionado com rótulo acessível -->
-        <button class="btn btn-primary" id="selectVehicle" aria-label="Selecionar veículo">Selecionar</button>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1>A bateria do seu carro entregue e instalada em até 50&nbsp;minutos</h1>
+      <p class="highlight">Pague somente na entrega</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" id="heroOrder">Peça agora</button>
+        <button class="btn btn-secondary" id="heroPrices">Confira os preços</button>
       </div>
     </div>
+  </section>
 
-    <!-- Seção de cartão de bateria e formulário de pedido -->
-    <section id="orderSection" class="order-section hidden">
-      <div class="container">
-        <div class="order-container">
-          <!-- Cartão de bateria fica fixo na lateral -->
-          <div id="batteryCard" class="battery-card"></div>
-          <!-- Painel de formulários -->
-          <div class="order-form-panel">
-            <!-- Barra de progresso horizontal com rótulos -->
-            <div class="progress">
-              <div class="progress-step" data-step="1">
-                <span class="circle">1</span>
-                <span class="label">Seus dados</span>
+  <!-- Etapas -->
+  <section class="steps" id="steps">
+    <div class="container">
+      <h2>Precisando de bateria para o seu carro?</h2>
+      <div class="step-list">
+        <div class="step-item"><span class="step-number">1</span><p>Selecione o local da entrega e o modelo do veículo</p></div>
+        <div class="step-item"><span class="step-number">2</span><p>Finalize o pedido e o pagamento será somente na entrega</p></div>
+        <div class="step-item"><span class="step-number">3</span><p>A Baterias1 vai até você com entrega e instalação grátis</p></div>
+      </div>
+      <button class="btn btn-primary" id="stepsOrder">Peça agora</button>
+    </div>
+  </section>
+
+  <!-- Modal de seleção -->
+  <div id="selectionModal" class="modal hidden">
+    <div class="modal-content">
+      <button class="modal-close" id="closeModal">×</button>
+      <h3>Escolha sua cidade e veículo</h3>
+      <input id="cityInput" list="cityList" placeholder="Digite sua cidade" />
+      <datalist id="cityList"></datalist>
+      <button class="btn btn-primary" id="useLocation">Usar minha localização</button>
+      <h3>Informe seu veículo</h3>
+      <input id="vehicleInput" list="vehicleList" placeholder="Marca, modelo, ano e versão" autocomplete="off" />
+      <datalist id="vehicleList"></datalist>
+      <button class="btn btn-primary" id="selectVehicle">Selecionar</button>
+    </div>
+  </div>
+
+  <!-- Card e formulário -->
+  <section id="orderSection" class="order-section hidden">
+    <div class="container">
+      <div class="order-container">
+        <div id="batteryCard" class="battery-card"></div>
+
+        <div class="order-form-panel">
+          <div class="progress">
+            <div class="progress-step" data-step="1"><span class="circle">1</span><span class="label">Seus dados</span></div>
+            <div class="progress-step" data-step="2"><span class="circle">2</span><span class="label">Endereço</span></div>
+            <div class="progress-step" data-step="3"><span class="circle">3</span><span class="label">Pagamento</span></div>
+          </div>
+
+          <form id="orderForm">
+            <!-- Etapa 1 -->
+            <div class="form-step" data-step="1">
+              <h3>Peça agora. Entrega e instalação grátis!</h3>
+              <label><input type="radio" name="deliveryTime" value="45min" checked /> Receber em até 45 min</label>
+              <label><input type="radio" name="deliveryTime" value="agendar" /> Agendar entrega</label>
+
+              <div id="scheduleFields" class="hidden">
+                <label>Data: <input type="date" id="scheduleDate" /></label>
+                <label>Hora: <input type="time" id="scheduleTime" /></label>
               </div>
-              <div class="progress-step" data-step="2">
-                <span class="circle">2</span>
-                <span class="label">Endereço de entrega</span>
-              </div>
-              <div class="progress-step" data-step="3">
-                <span class="circle">3</span>
-                <span class="label">Pagamento</span>
-              </div>
+
+              <input type="text" id="name" placeholder="Nome *" required />
+              <input type="tel" id="phone" placeholder="Telefone *" required />
+              <input type="email" id="email" placeholder="Email *" required />
+              <button type="button" class="btn btn-primary" id="toStep2">Preencher endereço</button>
             </div>
-            <form id="orderForm">
-              <div class="form-step" data-step="1">
-                <h3>Peça agora. Entrega e instalação grátis!</h3>
-                <div class="field-group">
-                  <label>
-                    <input
-                      type="radio"
-                      name="deliveryTime"
-                      value="45min"
-                      checked
-                    />
-                    Receber em até 45 minutos
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="deliveryTime"
-                      value="agendar"
-                    />
-                    Agendar entrega
-                  </label>
-                </div>
-                <!-- Campos adicionais para agendamento, ocultos por padrão -->
-                <div id="scheduleFields" class="hidden">
-                  <div class="field-group">
-                    <label for="scheduleDate">Data:</label>
-                    <input type="date" id="scheduleDate" />
-                  </div>
-                    <div class="field-group">
-                      <label for="scheduleTime">Horário:</label>
-                      <input type="time" id="scheduleTime" />
-                    </div>
-                    <div class="field-group">
-                      <p>Local da troca:</p>
-                      <label class="inline-label">
-                        <input type="radio" name="scheduleLocation" value="same" checked />
-                        Mesmo endereço
-                      </label>
-                      <label class="inline-label">
-                        <input type="radio" name="scheduleLocation" value="decidir" />
-                        Decidir depois
-                      </label>
-                    </div>
-                </div>
-                <div class="field-group">
-                  <input type="text" id="name" placeholder="Nome *" required />
-                </div>
-                <div class="field-group">
-                  <input type="tel" id="phone" placeholder="Telefone *" required />
-                </div>
-                <div class="field-group">
-                  <input type="email" id="email" placeholder="Email *" required />
-                </div>
-                <!-- Botão para avançar ao passo 2 (endereço) com rótulo acessível -->
-                <button type="button" class="btn btn-primary" id="toStep2" aria-label="Avançar para endereço">
-                  Preencher endereço
-                </button>
-              </div>
-              <div class="form-step" data-step="2">
-                <h3>Receba em até 45&nbsp;minutos.</h3>
-                <div class="field-group">
-                  <input
-                    type="text"
-                    id="address"
-                    placeholder="Endereço, Rua ou Estabelecimento *"
-                    required
-                  />
-                </div>
-                <div class="field-group">
-                  <input type="text" id="number" placeholder="Número *" required />
-                </div>
-                <div class="field-group">
-                  <input type="text" id="neighborhood" placeholder="Bairro *" required />
-                </div>
-                <div class="field-group">
-                  <input
-                    type="text"
-                    id="complement"
-                    placeholder="Complemento / Ponto de referência"
-                  />
-                </div>
-                <!-- Botão para avançar ao passo 3 (pagamento) com rótulo acessível -->
-                <button type="button" class="btn btn-primary" id="toStep3" aria-label="Avançar para pagamento">
-                  Selecionar forma de pagamento
-                </button>
-              </div>
-              <div class="form-step" data-step="3">
-                <h3>Pague somente na entrega.</h3>
-                <div class="field-group">
-                  <label>
-                    <input type="radio" name="payment" value="credito" checked />
-                    Cartão de crédito
-                  </label>
-                  <label>
-                    <input type="radio" name="payment" value="debito" />
-                    Cartão de débito
-                  </label>
-                  <label>
-                    <input type="radio" name="payment" value="dinheiro" />
-                    Dinheiro
-                  </label>
-                  <label>
-                    <input type="radio" name="payment" value="pix" />
-                    PIX
-                  </label>
-                </div>
-                <div class="field-group">
-                  <select id="cardFlag">
-                    <option value="MasterCard">MasterCard</option>
-                    <option value="Visa">Visa</option>
-                    <option value="Elo">Elo</option>
-                    <option value="American Express">American Express</option>
-                  </select>
-                </div>
-                <div class="field-group">
-                  <select id="installments">
-                    <!-- opções serão preenchidas via JS conforme preço -->
-                  </select>
-                </div>
-                <div class="field-group">
-                  <input type="text" id="document" placeholder="CPF/CNPJ *" required />
-                </div>
-                <div class="field-group checkbox">
-                  <label>
-                    <input type="checkbox" id="returnBattery" checked />
-                    Venda condicionada à devolução da bateria inservível.
-                  </label>
-                </div>
-                <!-- Grupo separado para ações do passo 3 -->
-                <div class="form-actions">
-                  <!-- Botão de submissão do pedido com rótulo acessível -->
-                  <button type="submit" class="btn btn-primary" aria-label="Solicitar entrega">
-                    Solicitar entrega
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-        <!-- Script de pedido gerado -->
-        <div id="orderSummary" class="order-summary hidden"></div>
-      </div>
-    </section>
 
-    <!-- Seção de dúvidas e ajuda -->
-    <section class="faq">
-      <div class="container">
-        <h2>Dúvidas? Nós te ajudamos!</h2>
-        <div class="faq-item">
-          <button type="button" class="faq-question">Não encontrei a bateria para o meu carro. E agora?</button>
-          <div class="faq-answer">
-            <p>Clique em "Falar no WhatsApp" que nossa equipe identifica e recomenda a melhor opção. Trabalhamos com todas as marcas e modelos (Chevrolet, Volkswagen, Fiat, Toyota, Hyundai e muitos outros).</p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <button type="button" class="faq-question">E se o problema não for bateria?</button>
-          <div class="faq-answer">
-            <p>Avaliamos gratuitamente no local: teste de carga, alternador, fuga de corrente e conectores.</p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <button type="button" class="faq-question">Como faço para realizar o pagamento?</button>
-          <div class="faq-answer">
-            <p>Pagamento na entrega: cartão, PIX ou dinheiro. Emitimos nota fiscal.</p>
-          </div>
+            <!-- Etapa 2 -->
+            <div class="form-step" data-step="2">
+              <h3>Receba em até 45 minutos.</h3>
+              <input type="text" id="address" placeholder="Endereço *" required />
+              <input type="text" id="number" placeholder="Número *" required />
+              <input type="text" id="neighborhood" placeholder="Bairro *" required />
+              <input type="text" id="complement" placeholder="Complemento" />
+              <button type="button" class="btn btn-primary" id="toStep3">Selecionar forma de pagamento</button>
+            </div>
+
+            <!-- Etapa 3 -->
+            <div class="form-step" data-step="3">
+              <h3>Pague somente na entrega.</h3>
+              <label><input type="radio" name="payment" value="credito" checked /> Crédito</label>
+              <label><input type="radio" name="payment" value="debito" /> Débito</label>
+              <label><input type="radio" name="payment" value="dinheiro" /> Dinheiro</label>
+              <label><input type="radio" name="payment" value="pix" /> Pix</label>
+
+              <select id="cardFlag">
+                <option>MasterCard</option><option>Visa</option><option>Elo</option><option>Amex</option>
+              </select>
+              <select id="installments"></select>
+              <input type="text" id="document" placeholder="CPF/CNPJ *" required />
+
+              <label><input type="checkbox" id="returnBattery" checked /> Venda condicionada à devolução da bateria inservível</label>
+              <button type="submit" class="btn btn-primary">Solicitar entrega</button>
+            </div>
+          </form>
         </div>
       </div>
-    </section>
+      <div id="orderSummary" class="order-summary hidden"></div>
+    </div>
+  </section>
 
-    <!-- Rodapé -->
-    <footer class="footer">
-      <div class="container">
-        <p>Atendimento 24h | contato@baterias1.com</p>
-        <p>Venda condicionada à devolução da bateria inservível (CONAMA 401/2008)</p>
-        <p>&copy; 2025 Baterias1. Todos os direitos reservados.</p>
-      </div>
-    </footer>
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="container">
+      <h2>Dúvidas? Nós te ajudamos!</h2>
+      <div class="faq-item"><button class="faq-question">Não encontrei a bateria...</button><div class="faq-answer"><p>Clique em "Falar no WhatsApp"...</p></div></div>
+      <div class="faq-item"><button class="faq-question">E se o problema não for bateria?</button><div class="faq-answer"><p>Avaliamos gratuitamente...</p></div></div>
+      <div class="faq-item"><button class="faq-question">Como faço o pagamento?</button><div class="faq-answer"><p>Pagamento na entrega: cartão, PIX ou dinheiro.</p></div></div>
+    </div>
+  </section>
 
-    <!-- Dados das baterias carregados como script para evitar problemas de CORS -->
-    <script src="bateriasData.js"></script>
-    <script src="script.js"></script>
-    <!-- Botão flutuante para contato via WhatsApp -->
-    <a
-      href="https://wa.me/5511970901461"
-      class="whatsapp-link"
-      target="_blank"
-      rel="noopener"
-      aria-label="Contato via WhatsApp"
-    >
-      <img src="whatsapp.svg" alt="WhatsApp" />
-    </a>
-  
-<a class="btn-painel" href="./login.html" aria-label="Abrir painel (login)">Painel</a>
-<script src="assets/js/autocomplete-motor-versao.js"></script>
+  <!-- Rodapé -->
+  <footer class="footer">
+    <div class="container">
+      <p>Atendimento 24h | contato@baterias1.com</p>
+      <p>Venda condicionada à devolução da bateria inservível (CONAMA 401/2008)</p>
+      <p>&copy; 2025 Baterias1. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="bateriasData.js"></script>
+  <script src="script.js"></script>
+  <script src="assets/js/autocomplete-motor-versao.js"></script>
   <script src="assets/js/enhancements.js"></script>
+
+  <!-- WhatsApp flutuante -->
+  <a href="https://wa.me/5511970901461" class="whatsapp-link" target="_blank" rel="noopener">
+    <img src="whatsapp.svg" alt="WhatsApp" />
+  </a>
+
+  <a class="btn-painel" href="./login.html">Painel</a>
 </body>
 </html>
-<section class="results-3cards" id="resultVehicleSection" style="display:block;">
-  <div class="container">
-    <h3 id="vehicleChosenText" class="vehicle-chosen"></h3>
-    <div class="cards-row" id="brandCardsRow"></div>
-    <small id="priceNote" class="muted"></small>
-  </div>
-</section>
-<section class="order" id="orderSection">
-  <div class="container">
-    <h3>Entrega</h3>
-    <div class="radios">
-      <label><input type="radio" name="deliveryTime" value="imediato" checked /> Imediata</label>
-      <label><input type="radio" name="deliveryTime" value="agendar" /> Agendada</label>
-    </div>
-    <div class="group">
-      <div>
-        <label>Dia</label>
-        <button type="button" id="dayPickerBtn" class="picker-btn">Escolher</button>
-        <input type="hidden" id="scheduleDate" />
-        <div id="dayPickerPanel" class="picker-panel">
-          <button type="button" data-day="today">Hoje</button>
-          <button type="button" data-day="tomorrow">Amanhã</button>
-        </div>
-      </div>
-      <div>
-        <label>Hora</label>
-        <button type="button" id="timePickerBtn" class="picker-btn">Escolher</button>
-        <input type="hidden" id="scheduleTime" />
-        <div id="timePickerPanel" class="picker-panel"></div>
-      </div>
-    </div>
-    <h3>Pagamento</h3>
-    <div class="radios">
-      <label><input type="radio" name="payment" value="pix" /> Pix</label>
-      <label><input type="radio" name="payment" value="debito" /> Débito</label>
-      <label><input type="radio" name="payment" value="credito" /> Crédito</label>
-      <label><input type="radio" name="payment" value="dinheiro" /> Dinheiro</label>
-    </div>
-    <div>
-      <label>Parcelas (se crédito)</label>
-      <select id="installments">
-        <option>1x</option><option>2x</option><option>3x</option><option>4x</option><option>5x</option>
-        <option>6x</option><option>7x</option><option>8x</option><option>9x</option><option selected>10x</option>
-      </select>
-    </div>
-    <div id="installmentDynamicLine" class="installment-line"></div>
-    <div style="margin-top:10px;">
-      <label>WhatsApp da loja</label>
-      <input id="whatsNumber" value="5583999999999" />
-    </div>
-    <button id="submitOrder" class="btn-primary" style="margin-top:12px;">Solicitar Entrega</button>
-  </div>
-</section>
