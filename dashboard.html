@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard • Baterias1</title>
+  <style>
+    :root{--blue:#0054a6;--violet:#6a1b9a;--muted:#f4f7ff;--ink:#0c1220;--surface:#fff;--line:#e6ecff}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Arial;background:linear-gradient(180deg,#f4f7ff,#f9f6ff)}
+    header{display:flex;gap:12px;align-items:center;justify-content:space-between;background:var(--blue);color:#fff;padding:12px 16px}
+    .wrap{padding:20px;max-width:1200px;margin:0 auto}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+    .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+    .kpi{font-size:28px;font-weight:800;color:var(--violet)} .label{color:#51607a}
+    table{width:100%;border-collapse:collapse} th,td{padding:10px;border-bottom:1px solid var(--line);font-size:14px} th{text-align:left;color:#51607a}
+    .status{padding:4px 10px;border-radius:999px;font-weight:700;font-size:12px}
+    .p{background:#e8f2ff;color:#0b58b1} .r{background:#efe8ff;color:#6a1b9a} .e{background:#e7fee8;color:#1a7f37}
+    .logout{background:var(--violet);color:#fff;border:none;border-radius:8px;padding:8px 12px;cursor:pointer}
+    .back{color:#fff;text-decoration:none;font-weight:700}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+    .filters input,.filters select{padding:8px 10px;border:1px solid var(--line);border-radius:8px}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+    .btn{background:var(--blue);color:#fff;border:none;border-radius:8px;padding:8px 12px;cursor:pointer;font-weight:700}
+    .charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+    canvas{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px}
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>.btn-painel{position:fixed;left:16px;bottom:16px;background:#6a1b9a;color:#fff;border:none;border-radius:10px;padding:12px 16px;box-shadow:0 6px 18px rgba(0,0,0,.15);font-weight:700;letter-spacing:.2px;cursor:pointer;z-index:9999} .btn-painel:hover{filter:brightness(1.05)}</style>
+</head>
+<body>
+  <script>
+    if(localStorage.getItem('auth_dashboard')!=='ok'){ location.replace('login.html'); }
+  </script>
+  <header>
+    <div><a class="back" href="./index.html">← Voltar</a> &nbsp; <strong>📊 Dashboard</strong></div>
+    <button class="logout" onclick="localStorage.removeItem('auth_dashboard');location.href='login.html'">Sair</button>
+  </header>
+  <div class="wrap">
+    <div class="grid">
+      <div class="card"><div class="label">Pedidos</div><div class="kpi" id="kpiTotal">0</div></div>
+      <div class="card"><div class="label">Pendentes</div><div class="kpi" id="kpiPendentes">0</div></div>
+      <div class="card"><div class="label">Em rota</div><div class="kpi" id="kpiRota">0</div></div>
+      <div class="card"><div class="label">Entregues</div><div class="kpi" id="kpiEntregues">0</div></div>
+      <div class="card"><div class="label">Faturamento</div><div class="kpi" id="kpiRevenue">R$ 0,00</div></div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="filters">
+        <input type="date" id="dateStart">
+        <input type="date" id="dateEnd">
+        <select id="statusFilter">
+          <option value="">Todos</option>
+          <option>Pendente</option>
+          <option>Em rota</option>
+          <option>Entregue</option>
+        </select>
+      </div>
+      <div class="actions">
+        <button class="btn" onclick="applyFilters()">Filtrar</button>
+        <button class="btn" onclick="clearFilters()">Limpar</button>
+        <button class="btn" onclick="exportCSV()">Exportar CSV</button>
+      </div>
+      <table id="tbl">
+        <thead><tr><th>Data</th><th>Cliente</th><th>Veículo</th><th>Tecnologia</th><th>Preço</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="charts" style="margin-top:16px">
+      <canvas id="chartStatus" height="200"></canvas>
+      <canvas id="chartDaily" height="200"></canvas>
+      <canvas id="chartTech" height="200"></canvas>
+    </div>
+  </div>
+
+  <script>
+    // ===== Leitura e utilitários =====
+    // Aceita várias chaves comuns para compatibilidade com seu site
+    const POSSIBLE_KEYS = ['orders','pedidos','orders_v2'];
+    let dataStr = '[]';
+    for(const k of POSSIBLE_KEYS){ try{ const v = localStorage.getItem(k); if(v && v !== '[]'){{ dataStr = v; break; }} }catch(e){} }
+    const ALL = JSON.parse(dataStr || '[]');
+
+    const tbody = document.querySelector('#tbl tbody');
+    const elKpiT = document.getElementById('kpiTotal');
+    const elKpiP = document.getElementById('kpiPendentes');
+    const elKpiR = document.getElementById('kpiRota');
+    const elKpiE = document.getElementById('kpiEntregues');
+    const elKpiRev = document.getElementById('kpiRevenue');
+
+    function money(v){ try{ return (Number(v)||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});}catch(e){return 'R$ 0,00';}}
+    function dateISO(d){ try{ return new Date(d).toISOString().slice(0,10);}catch(e){ return ''; } }
+
+    // ===== KPIs =====
+    function computeKPIs(data){
+      let t=0,p=0,r=0,e=0, revenue=0;
+      data.forEach(o=>{
+        t++;
+        const st = o.status||'Pendente';
+        const price = Number(o.total||o.preco||o.price||0);
+        revenue += price;
+        if(st==='Pendente') p++; else if(st==='Em rota') r++; else if(st==='Entregue') e++;
+      });
+      elKpiT.textContent=t; elKpiP.textContent=p; elKpiR.textContent=r; elKpiE.textContent=e;
+      elKpiRev.textContent = money(revenue);
+    }
+
+    // ===== Tabela =====
+    function renderRows(data){
+      tbody.innerHTML='';
+      data.forEach((o,idx)=>{
+        const tr = document.createElement('tr');
+        const veh = o.vehicle ? `${o.vehicle.marca||''} ${o.vehicle.modelo||''} ${o.vehicle.ano||''} ${o.vehicle.versao||''}`.trim() : (o.veiculo||'-');
+        const price = o.total||o.preco||o.price||0;
+        const st = o.status||'Pendente';
+        const tech = o.tecnologia || o.technology || '-';
+        tr.innerHTML = `
+          <td>${dateISO(o.created_at||o.date||Date.now())}</td>
+          <td>${o.name||o.nome||'-'}</td>
+          <td>${veh}</td>
+          <td>${tech}</td>
+          <td>${money(price)}</td>
+          <td>
+            <select data-idx="${idx}">
+              <option ${st==='Pendente'?'selected':''}>Pendente</option>
+              <option ${st==='Em rota'?'selected':''}>Em rota</option>
+              <option ${st==='Entregue'?'selected':''}>Entregue</option>
+            </select>
+          </td>`;
+        tbody.appendChild(tr);
+      });
+      tbody.querySelectorAll('select').forEach(sel=>{
+        sel.addEventListener('change', (e)=>{
+          const i = Number(e.target.getAttribute('data-idx'));
+          ALL[i].status = e.target.value;
+          localStorage.setItem('orders', JSON.stringify(ALL));
+          applyFilters(); // recomputa KPIs e gráficos
+        });
+      });
+    }
+
+    // ===== Filtros =====
+    function applyFilters(){
+      const d1 = document.getElementById('dateStart').value || '';
+      const d2 = document.getElementById('dateEnd').value || '';
+      const st = document.getElementById('statusFilter').value || '';
+      let view = ALL.slice();
+      if(d1){
+        view = view.filter(o=> new Date(o.created_at||o.date||Date.now()) >= new Date(d1));
+      }
+      if(d2){
+        view = view.filter(o=> new Date(o.created_at||o.date||Date.now()) <= new Date(d2+'T23:59:59'));
+      }
+      if(st){
+        view = view.filter(o=> (o.status||'Pendente') === st);
+      }
+      computeKPIs(view);
+      renderRows(view);
+      drawCharts(view);
+    }
+
+    function clearFilters(){
+      document.getElementById('dateStart').value='';
+      document.getElementById('dateEnd').value='';
+      document.getElementById('statusFilter').value='';
+      applyFilters();
+    }
+
+    // ===== Export CSV =====
+    function exportCSV(){
+      const rows = [['Data','Cliente','Veículo','Tecnologia','Preço','Status']];
+      const d1 = document.getElementById('dateStart').value || '';
+      const d2 = document.getElementById('dateEnd').value || '';
+      const st = document.getElementById('statusFilter').value || '';
+      let view = ALL.slice();
+      if(d1){ view = view.filter(o=> new Date(o.created_at||o.date||Date.now()) >= new Date(d1)); }
+      if(d2){ view = view.filter(o=> new Date(o.created_at||o.date||Date.now()) <= new Date(d2+'T23:59:59')); }
+      if(st){ view = view.filter(o=> (o.status||'Pendente') === st); }
+      view.forEach(o=>{
+        const veh = o.vehicle ? `${o.vehicle.marca||''} ${o.vehicle.modelo||''} ${o.vehicle.ano||''} ${o.vehicle.versao||''}`.trim() : (o.veiculo||'-');
+        const price = o.total||o.preco||o.price||0;
+        const tech = o.tecnologia || o.technology || '-';
+        rows.push([dateISO(o.created_at||o.date||Date.now()), o.name||o.nome||'-', veh, tech, price, o.status||'Pendente']);
+      });
+      const csv = rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(',')).join('\n');
+      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'relatorio-pedidos.csv'; a.click();
+    }
+
+    // ===== Gráficos (Chart.js) =====
+    let chartStatus, chartDaily, chartTech;
+
+    function groupBy(arr, getKey){
+      const m = new Map();
+      arr.forEach(x=>{
+        const k = getKey(x); m.set(k,(m.get(k)||0)+1);
+      });
+      return m;
+    }
+
+    function drawCharts(data){
+      // Status
+      const gStatus = groupBy(data, o => o.status || 'Pendente');
+      const stLabels = Array.from(gStatus.keys());
+      const stVals   = Array.from(gStatus.values());
+
+      // Por dia
+      const byDay = groupBy(data, o => (o.created_at||o.date) ? (new Date(o.created_at||o.date).toISOString().slice(0,10)) : (new Date().toISOString().slice(0,10)));
+      const dayLabels = Array.from(byDay.keys()).sort();
+      const dayVals   = dayLabels.map(k=>byDay.get(k));
+
+      // Tecnologia
+      const gTech = groupBy(data, o => (o.tecnologia || o.technology || '—'));
+      const techLabels = Array.from(gTech.keys());
+      const techVals   = Array.from(gTech.values());
+
+      function resetChart(ch){ if(ch){ ch.destroy(); } }
+
+      resetChart(chartStatus);
+      chartStatus = new Chart(document.getElementById('chartStatus').getContext('2d'), {
+        type:'bar',
+        data:{ labels: stLabels, datasets:[{ label:'Pedidos por Status', data: stVals }] },
+        options:{ responsive:true, plugins:{ legend:{ display:false } } }
+      });
+
+      resetChart(chartDaily);
+      chartDaily = new Chart(document.getElementById('chartDaily').getContext('2d'), {
+        type:'line',
+        data:{ labels: dayLabels, datasets:[{ label:'Pedidos por Dia', data: dayVals, tension:0.2 }] },
+        options:{ responsive:true }
+      });
+
+      resetChart(chartTech);
+      chartTech = new Chart(document.getElementById('chartTech').getContext('2d'), {
+        type:'pie',
+        data:{ labels: techLabels, datasets:[{ label:'Tecnologia', data: techVals }] },
+        options:{ responsive:true }
+      });
+    }
+
+    // Inicializa
+    applyFilters();
+  </script>
+
+<a class="btn-painel" href="./login.html" aria-label="Abrir painel (login)">Painel</a>
+<script src="assets/js/autocomplete-motor-versao.js"></script>
+</body>
+</html>

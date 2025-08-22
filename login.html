@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login • Painel</title>
+  <style>
+    :root{--blue:#0054a6;--violet:#6a1b9a;--bg:#f7fbff;--card:#ffffff}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Arial}
+    main{min-height:100vh;display:grid;place-items:center;background:linear-gradient(180deg,#eef5ff,#f6f0ff)}
+    .card{width:min(420px,92vw);background:var(--card);padding:28px;border-radius:14px;
+      box-shadow:0 12px 40px rgba(0,0,0,.08);border:1px solid #e8eefc}
+    h1{margin:0 0 16px;color:#0c1220} .muted{color:#50607a;margin:0 0 24px}
+    label{display:block;font-weight:600;margin:10px 0 6px;color:#0c1220}
+    input{width:100%;padding:12px 14px;border:1px solid #d7e4fb;border-radius:10px;background:#fff}
+    .btn{width:100%;padding:12px 16px;border:none;border-radius:10px;background:var(--violet);color:#fff;font-weight:700;margin-top:16px;cursor:pointer}
+    .back{display:inline-block;margin-top:12px;color:var(--blue);text-decoration:none;font-weight:600}
+  </style>
+<style>.btn-painel{position:fixed;left:16px;bottom:16px;background:#6a1b9a;color:#fff;border:none;border-radius:10px;padding:12px 16px;box-shadow:0 6px 18px rgba(0,0,0,.15);font-weight:700;letter-spacing:.2px;cursor:pointer;z-index:9999} .btn-painel:hover{filter:brightness(1.05)}</style>
+</head>
+<body>
+  <main>
+    <div class="card">
+      <h1>Entrar no Painel</h1>
+      <p class="muted">Digite seu usuário e senha para acessar o Dashboard.</p>
+      <label for="user">Usuário</label>
+      <input id="user" type="text" autocomplete="username" autofocus placeholder="baterias1">
+      <label for="pass">Senha</label>
+      <input id="pass" type="password" autocomplete="current-password" placeholder="•••••">
+      <button class="btn" id="doLogin">Entrar</button>
+      <a class="back" href="./index.html">← Voltar ao site</a>
+    </div>
+  </main>
+  <script>
+    const EXPECTED = "9624f68aa4bf8419b2954bd7746e990224bc2f413485a4d3cb2168cf66ed9187";
+    const SALT = "b1v1";
+    async function sha256hex(str){
+      const enc = new TextEncoder().encode(str);
+      const buf = await crypto.subtle.digest('SHA-256', enc);
+      return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+    }
+    async function doLogin() {
+      const u = (document.getElementById('user').value||'').trim();
+      const p = document.getElementById('pass').value||'';
+      const calc = await sha256hex(`${u}:${p}|${SALT}`);
+      if(calc === EXPECTED){
+        localStorage.setItem('auth_dashboard','ok');
+        location.href = 'dashboard.html';
+      } else {
+        alert('Usuário ou senha incorretos.');
+      }
+    }
+    document.getElementById('doLogin').addEventListener('click', doLogin);
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Enter') doLogin(); });
+  </script>
+
+<a class="btn-painel" href="./login.html" aria-label="Abrir painel (login)">Painel</a>
+<script src="assets/js/autocomplete-motor-versao.js"></script>
+</body>
+</html>
