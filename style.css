@@ -15,7 +15,7 @@
 }
 
 body {
-  /* A fonte Montserrat fornece um visual limpo e similar ao site Moura Fácil. */
+  /* A fonte Montserrat fornece um visual limpo e similar ao site Moura Fácil. */
   font-family: 'Montserrat', Arial, sans-serif;
   background-color: #f5f5f5;
   color: #333;
@@ -105,7 +105,7 @@ body {
 
 /* Header */
 .header {
-  /* Atualiza o gradiente do cabeçalho para tons de azul, aproximando da identidade visual do Moura Fácil */
+  /* Atualiza o gradiente do cabeçalho para tons de azul, aproximando da identidade visual do Moura Fácil */
   background: linear-gradient(90deg, #003d79, #0054a6);
   color: #fff;
   padding: 0.5rem 0;
@@ -219,7 +219,154 @@ body {
   font-weight: bold;
 }
 
-/* ... (conteúdo segue com seções: modal, forms, cards, footer, responsividade, etc.) ... */
+/* Modal de seleção */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 6px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 480px;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Reduz o espaçamento vertical entre grupos de campos para diminuir a altura total do formulário */
+/* Reduz ainda mais o espaço vertical entre campos para que os formulários caibam melhor em telas menores */
+.field-group {
+  margin-bottom: 0.5rem;
+}
+
+.field-group input,
+.field-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.suggestions {
+  list-style: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-height: 150px;
+  overflow-y: auto;
+  margin-top: 0;
+  padding: 0;
+}
+
+.suggestions li {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.suggestions li:hover {
+  background: #eee;
+}
+
+/* Seção de pedido */
+.order-section {
+  padding: 3rem 0;
+  background: #f5f5f5;
+}
+
+.order-section.hidden {
+  display: none;
+}
+
+.battery-card {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  display: none;
+}
+
+.battery-card img {
+  max-width: 120px;
+}
+
+.battery-details {
+  margin-left: 1rem;
+}
+
+.progress {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.progress-step {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: bold;
+}
+
+.progress-step.active {
+  background: #e0c36d;
+  color: #000;
+}
+
+.form-step {
+  display: none;
+}
+
+.form-step.active {
+  display: block;
+}
+
+.checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Sumário do pedido */
+.order-summary {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+}
+
+.order-summary.hidden {
+  display: none;
+}
 
 /* Botão flutuante de WhatsApp */
 .whatsapp-link {
@@ -242,17 +389,568 @@ body {
   opacity: 0.9;
 }
 
-/* ===== Correção do menu de navegação no cabeçalho ===== */
-.header { padding: 12px 0; background: #fff; }
-.header .header-content {
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+/* Ajustes para o modal de seleção para combinar com o tema escuro e melhorar legibilidade */
+/* Modal claro */
+.modal-content {
+  background: #ffffff;
+  color: #003d79;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-.header nav { display: flex; align-items: center; justify-content: center; gap: 24px; }
-.header nav a { color: #003d79; text-decoration: none; font-weight: 600; }
-.header nav a:visited { color: #003d79; }
-.header nav a:hover, .header nav a:focus { text-decoration: underline; outline: none; }
+.modal-content h3 {
+  margin-bottom: 0.5rem;
+  color: #003d79;
+  font-weight: 500;
+}
+.modal-content .field-group input,
+.modal-content .field-group select {
+  background: #f9fbff;
+  color: #003d79;
+  border: 1px solid #ccd6e6;
+  border-radius: 6px;
+}
+.modal-content .field-group input::placeholder {
+  color: #7c8aa7;
+}
+.modal-content .btn {
+  background: #0054a6;
+  color: #fff;
+  border-radius: 6px;
+}
 
+/* ------------------------------------------------------------------ */
+/* Estilos adicionais e sobrescritos para o tema escuro e layout atualizado */
+/* Estes estilos são definidos ao final do arquivo para garantir que
+   prevaleçam sobre os estilos básicos definidos anteriormente. */
+
+/* Tema claro geral */
+body {
+  font-family: 'Poppins', Arial, sans-serif;
+  background: #f5faff;
+  color: #333;
+}
+
+/* Cabeçalho claro */
+.header {
+  background: #ffffff;
+  color: #0054a6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Botão primário azul */
+.btn-primary {
+  background: #0054a6;
+  color: #fff;
+}
+
+/* Botão secundário com contorno azul */
+.btn-secondary {
+  background: #ffffff;
+  color: #0054a6;
+  border: 2px solid #0054a6;
+}
+
+/* Seção hero clara */
+.hero {
+  background: linear-gradient(90deg, #f0f6ff 0%, #e8f1ff 100%);
+  color: #003d79;
+  /* Ajuste de espaçamento vertical para melhorar a visualização em dispositivos menores */
+  padding: 3rem 1rem;
+}
+
+/* Destaque da hero em laranja */
+/* Destaque da hero em amarelo dourado para alinhamento com a identidade visual */
+.hero .highlight {
+  font-weight: 600;
+  color: #f9c806;
+}
+
+/* Passos claros */
+.steps {
+  background: #f5faff;
+  color: #003d79;
+}
+
+.steps h2 {
+  font-weight: 600;
+}
+
+/* Itens de passo com fundo branco e borda */
+.step-item {
+  background: #ffffff;
+  border: 1px solid #dbe6ff;
+}
+
+/* Seção de pedido clara */
+.order-section {
+  /* Ajuste de preenchimento para evitar rolagem excessiva */
+  background: #f5faff;
+  padding: 2rem 0;
+}
+
+/* Layout para cartão e painel de formulário */
+.order-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+/* Cartão de bateria claro */
+.battery-card {
+  background: #ffffff;
+  border: 1px solid #dbe6ff;
+  color: #003d79;
+  padding: 1.5rem;
+  border-radius: 8px;
+  flex: 0 0 38%;
+  display: none;
+}
+.battery-card p {
+  margin: 0.25rem 0;
+}
+
+/* Estrutura detalhada do cartão de bateria */
+.battery-banner {
+  background: #0054a6;
+  color: #ffffff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px 6px 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: -1.5rem -1.5rem 1rem -1.5rem;
+}
+.battery-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+.battery-header img {
+  width: 100px;
+}
+.battery-price {
+  color: #0054a6;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.battery-price .installments {
+  display: block;
+  font-size: 0.85rem;
+  color: #003d79;
+  font-weight: 600;
+}
+.battery-cash {
+  font-size: 0.85rem;
+  color: #003d79;
+  margin-top: 0.25rem;
+}
+.battery-discount {
+  background: #f5c046;
+  color: #003d79;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+.battery-specs p {
+  margin: 0;
+  margin-bottom: 0.25rem;
+  font-size: 0.85rem;
+  color: #003d79;
+}
+.battery-selection {
+  margin-top: 0.75rem;
+}
+.battery-selection .selection-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.battery-selection .selection-row span {
+  flex: 1;
+  margin-left: 0.5rem;
+  font-weight: 600;
+}
+.battery-selection .edit-btn {
+  background: #eef3fc;
+  border: none;
+  color: #0054a6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+.battery-features {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0;
+}
+.battery-features li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  color: #003d79;
+}
+.battery-features img {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.5rem;
+}
+.btn-order-battery {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+  background: #ff9800;
+  color: #ffffff;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+.btn-order-battery:hover {
+  background: #e58a00;
+}
+
+/* Painel de formulário com cores claras */
+.order-form-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  color: #003d79;
+}
+
+/* Barra de progresso com rótulos */
+.progress {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+}
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+  text-align: center;
+  color: #7c8aa7;
+  font-size: 0.75rem;
+}
+.progress-step .circle {
+  /* Reduz o tamanho dos círculos da barra de progresso para caber melhor em telas menores */
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #dbe6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #003d79;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+.progress-step.active .circle {
+  background: #0054a6;
+  color: #ffffff;
+}
+.progress-step.active .label {
+  color: #0054a6;
+  font-weight: 600;
+}
+
+/* Reset any background applied to the entire active step from previous rules */
+.progress-step.active {
+  background: transparent;
+  color: inherit;
+}
+
+/* Campos de formulário claros */
+.field-group input,
+.field-group select {
+  background: #f9fbff;
+  border: 1px solid #ccd6e6;
+  color: #003d79;
+  border-radius: 6px;
+}
+.field-group input::placeholder {
+  color: #7c8aa7;
+}
+
+/* Checkbox label cor escura */
+.checkbox label {
+  color: #003d79;
+}
+
+/* Adiciona uma separação apenas para o grupo de ações do passo 3 (botão de solicitação) */
+.form-actions {
+  margin-top: 1rem;
+}
+
+/* Sumário claro */
+.order-summary {
+  background: #ffffff;
+  border: 1px solid #dbe6ff;
+  color: #003d79;
+  white-space: pre-wrap;
+}
+
+/* Botão de WhatsApp apenas com ícone */
+.whatsapp-link {
+  width: 56px;
+  height: 56px;
+  background: #25d366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  color: #fff;
+}
+
+.whatsapp-link img {
+  width: 28px;
+  height: 28px;
+  filter: invert(0);
+}
+
+/* Rótulos em linha para as opções de local de agendamento */
+.inline-label {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 1rem;
+  font-size: 0.9rem;
+  color: #003d79;
+}
+.inline-label input {
+  margin-right: 0.25rem;
+}
+
+/* Responsividade para telas menores */
 @media (max-width: 768px) {
-  .header .header-content { flex-direction: column; }
-  .header nav { gap: 16px; flex-wrap: wrap; }
+  /* Ajusta o container principal para empilhar cartão e formulário verticalmente */
+  .order-container {
+    flex-direction: column;
+  }
+  .battery-card {
+    flex: 1 1 auto;
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+  .order-form-panel {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+  /* Reduz o tamanho dos círculos e texto da barra de progresso */
+  .progress-step .circle {
+    width: 24px;
+    height: 24px;
+    font-size: 0.7rem;
+  }
+  .progress-step {
+    font-size: 0.7rem;
+  }
+  /* Ajusta tamanhos de títulos e campos para caber melhor */
+  .form-step h3 {
+    font-size: 1.1rem;
+  }
+  .field-group input,
+  .field-group select {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+  .order-form-panel button {
+    width: 100%;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Seção de dúvidas (FAQ) */
+.faq {
+  background: #f5faff;
+  padding: 2rem 0;
+  color: #003d79;
+}
+.faq h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+}
+.faq-item {
+  border: 1px solid #dbe6ff;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  background: #ffffff;
+}
+.faq-question {
+  width: 100%;
+  background: #ffffff;
+  color: #003d79;
+  padding: 1rem;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+.faq-question::after {
+  content: '▼';
+  font-size: 0.8rem;
+  transition: transform 0.2s ease;
+}
+.faq-item.open .faq-question::after {
+  transform: rotate(180deg);
+}
+.faq-answer {
+  display: none;
+  padding: 0.75rem 1rem 1rem 1rem;
+  background: #f9fbff;
+  color: #003d79;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.faq-item.open .faq-answer {
+  display: block;
+}
+
+/* Rodapé */
+.footer {
+  background: #f5faff;
+  color: #7c8aa7;
+  padding: 1.5rem 0;
+  text-align: center;
+  font-size: 0.85rem;
+}
+.footer p {
+  margin: 0.25rem 0;
+}
+
+/*
+ * Ajustes responsivos para dispositivos móveis (largura até 768px)
+ * Esses estilos reduzem os espaços verticais, reorganizam o cartão e o painel de pedido
+ * em uma única coluna e diminuem o tamanho dos elementos para melhorar a experiência
+ * em telas estreitas como celulares (formato 9x16).
+ */
+@media (max-width: 768px) {
+  /* Layout em coluna para o cartão e formulário */
+  .order-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  /* O cartão de bateria ocupa toda a largura */
+  .battery-card {
+    flex: 1 1 100%;
+    margin-bottom: 1rem;
+  }
+  /* Painel de formulário ocupa toda a largura */
+  .order-form-panel {
+    width: 100%;
+  }
+  /* Reduz ainda mais o espaçamento entre campos de formulário em telas estreitas */
+  .order-form-panel .field-group {
+    margin-bottom: 0.4rem;
+  }
+  /* Ajusta o tamanho das etapas da barra de progresso */
+  .progress-step .circle {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+  .progress-step {
+    font-size: 0.7rem;
+  }
+  /* Ajusta o botão principal do cartão para telas menores */
+  .btn-order-battery {
+    margin-top: 0.75rem;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+  /* Ajusta espaçamento do sumário e seção de dúvidas */
+  .order-summary {
+    margin-top: 0.75rem;
+  }
+  .faq {
+    padding: 1.5rem 0;
+  }
+  .faq h2 {
+    font-size: 1.25rem;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Progress bar redesign: circles with labels below
+   To avoid stretched ovals and improve legibility, each step in the
+   progress bar is represented as a small circle followed by a label.  */
+.progress {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+}
+.progress-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #7c8aa7;
+  /* Remove fixed dimensions and background from earlier definitions */
+  width: auto;
+  height: auto;
+  background: transparent;
+  border-radius: 0;
+}
+.progress-step .circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #7c8aa7;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.25rem;
+  color: #7c8aa7;
+  font-weight: 600;
+}
+.progress-step .label {
+  line-height: 1.2;
+}
+.progress-step.active .circle {
+  background: #0054a6;
+  border-color: #0054a6;
+  color: #ffffff;
+}
+.progress-step.active .label {
+  color: #0054a6;
+  font-weight: 600;
+}
+
+/* Responsive tweaks for small screens */
+@media (max-width: 768px) {
+  .progress-step {
+    font-size: 0.65rem;
+  }
+  .progress-step .circle {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+  }
 }
