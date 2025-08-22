@@ -987,3 +987,19 @@ body {
 
 /* centrando o botão 'Selecionar' do modal */
 .select-btn-wrapper { display: flex; justify-content: center; }
+/* botão de localização apenas com ícone */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 6px;
+}
+
+.btn-icon img {
+  width: 18px;
+  height: 18px;
+  filter: brightness(0) invert(1); /* deixa o ícone branco, igual ao texto do botão */
+}
