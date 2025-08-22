@@ -989,3 +989,4 @@ body {
     font-size: 0.75rem;
   }
 }
+.btn-icon svg { background: transparent !important; color: #fff; }
