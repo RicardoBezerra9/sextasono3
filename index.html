@@ -3,84 +3,106 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Baterias 1 – Delivery de Baterias</title>
+    <title>Baterias 1 – Delivery de Baterias</title>
     <link rel="stylesheet" href="style.css" />
-  <style>.btn-painel{position:fixed;left:16px;bottom:16px;background:#6a1b9a;color:#fff;border:none;border-radius:10px;padding:12px 16px;box-shadow:0 6px 18px rgba(0,0,0,.15);font-weight:700;letter-spacing:.2px;cursor:pointer;z-index:9999} .btn-painel:hover{filter:brightness(1.05)}</style>
-  <link rel="stylesheet" href="assets/css/enhancements.css" />
-</head>
+    <link rel="stylesheet" href="assets/css/enhancements.css" />
+    <style>
+      .btn-painel {
+        position: fixed;
+        left: 16px;
+        bottom: 16px;
+        background: #6a1b9a;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 12px 16px;
+        box-shadow: 0 6px 18px rgba(0,0,0,.15);
+        font-weight: 700;
+        letter-spacing: .2px;
+        cursor: pointer;
+        z-index: 9999;
+      }
+      .btn-painel:hover { filter: brightness(1.05); }
+
+      /* botão de localização apenas ícone */
+      .btn-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border-radius: 6px;
+      }
+      .btn-icon svg {
+        width: 18px;
+        height: 18px;
+        display: block;
+        fill: #fff;
+        background: transparent !important;
+      }
+
+      .select-btn-wrapper {
+        display: flex;
+        justify-content: center;
+      }
+    </style>
+  </head>
   <body>
-    <!-- Header com logotipo e botão de ação principal -->
+    <!-- Header -->
     <header class="header">
       <div class="container header-content">
         <div class="logo">
-          <!-- A logomarca é referenciada no mesmo diretório para simplificar o caminho -->
-          <img src="logo_baterias1.jpeg" alt="Logomarca Baterias 1" />
+          <img src="assets/img/logo-baterias1.svg" alt="Baterias 1" />
+          <span>Baterias 1</span>
         </div>
-        <!-- Botão de chamada principal com rótulo acessível -->
-        <button class="btn btn-primary" id="ctaStart" aria-label="Peça agora">Peça agora</button>
+        <nav class="nav">
+          <a href="#como-funciona">Como funciona</a>
+          <a href="#vantagens">Vantagens</a>
+          <a href="#contato">Contato</a>
+        </nav>
+        <button class="btn btn-primary" id="openSelection" aria-label="Peça agora">Peça agora</button>
       </div>
     </header>
 
-    <!-- Seção de hero com a proposta de valor -->
+    <!-- Hero -->
     <section class="hero">
-      <div class="container">
-        <h1>A bateria certa para seu carro</h1>
-        <p class="highlight">Pague somente na entrega</p>
-        <div class="hero-actions">
-          <!-- Botões da seção hero com rótulos acessíveis -->
-          <button class="btn btn-primary" id="heroOrder" aria-label="Peça agora">Peça agora</button>
-          <button class="btn btn-secondary" id="heroPrices" aria-label="Confira os preços">Confira os preços</button>
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1>A bateria certa entregue e instalada onde você estiver</h1>
+          <p>Descubra a bateria ideal para seu carro e receba com instalação rápida na sua cidade.</p>
+          <button class="btn btn-primary" id="stepsOrder" aria-label="Peça agora">Peça agora</button>
+        </div>
+        <div class="hero-art">
+          <img src="assets/img/hero-battery.svg" alt="Bateria automotiva" />
         </div>
       </div>
     </section>
 
-    <!-- Seção explicando o passo a passo do serviço -->
-    <section class="steps">
-      <div class="container">
-        <h2>Precisando de bateria para o seu carro?</h2>
-        <div class="step-list">
-          <div class="step-item">
-            <span class="step-number">1</span>
-            <p>Selecione o local da entrega e o modelo do veículo</p>
-          </div>
-          <div class="step-item">
-            <span class="step-number">2</span>
-            <p>Finalize o pedido e o pagamento será somente na entrega</p>
-          </div>
-          <div class="step-item">
-            <span class="step-number">3</span>
-            <p>A Bateria 1 vai até você com entrega e instalação grátis</p>
-          </div>
-        </div>
-        <!-- Botão de pedido na seção de etapas com rótulo acessível -->
-        <button class="btn btn-primary" id="stepsOrder" aria-label="Peça agora">Peça agora</button>
-      </div>
-    </section>
-
-    <!-- Modal de seleção de cidade e veículo -->
+    <!-- Modal -->
     <div id="selectionModal" class="modal hidden">
       <div class="modal-content">
-        <!-- Botão para fechar o modal com rótulo acessível -->
         <button class="modal-close" id="closeSelection" aria-label="Fechar seleção">×</button>
-<h3>Informe sua cidade</h3>
+        <h3>Informe sua cidade</h3>
+        <div class="field-group city-group">
+          <input
+            type="text"
+            id="cityInput"
+            placeholder="Buscar cidades"
+            list="cityList"
+          />
+          <datalist id="cityList"></datalist>
 
-<div class="field-group city-group">
-  <input
-    type="text"
-    id="cityInput"
-    placeholder="Buscar cidades"
-    list="cityList"
-  />
-  <datalist id="cityList"></datalist>
+          <!-- Botão Localização com SVG inline -->
+          <button type="button" class="btn btn-primary btn-icon" id="useLocation" title="Usar minha localização">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 21s-6-5.33-6-10a6 6 0 1 1 12 0c0 4.67-6 10-6 10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <circle cx="12" cy="11" r="2.5" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
 
-  <!-- Botão apenas com ícone -->
-  <button type="button" class="btn btn-primary btn-icon" id="useLocation" title="Usar minha localização">
-    <img src="assets/icons/location.png" alt="Localização" />
-  </button>
-</div>
-
-<h3>Informe seu veículo</h3>
-
+        <h3>Informe seu veículo</h3>
         <div class="field-group">
           <input
             type="text"
@@ -91,526 +113,221 @@
           />
           <datalist id="vehicleList"></datalist>
         </div>
-        <!-- Botão para confirmar o veículo selecionado com rótulo acessível -->
-        <button class="btn btn-primary" id="selectVehicle" aria-label="Selecionar veículo">Selecionar</button>
+
+        <div class="select-btn-wrapper">
+          <button class="btn btn-primary" id="selectVehicle" aria-label="Selecionar veículo" style="margin:14px auto 0;">
+            Selecionar
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Seção de cartão de bateria e formulário de pedido -->
-    <section id="orderSection" class="order-section hidden">
+    <!-- Resultados -->
+    <section id="resultSection" class="hidden">
       <div class="container">
-        <div class="order-container">
-          <!-- Cartão de bateria fica fixo na lateral -->
-          <div id="batteryCard" class="battery-card"></div>
-          <!-- Painel de formulários -->
-          <div class="order-form-panel">
-            <!-- Barra de progresso horizontal com rótulos -->
-            <div class="progress">
-              <div class="progress-step" data-step="1">
-                <span class="circle">1</span>
-                <span class="label">Seus dados</span>
-              </div>
-              <div class="progress-step" data-step="2">
-                <span class="circle">2</span>
-                <span class="label">Endereço de entrega</span>
-              </div>
-              <div class="progress-step" data-step="3">
-                <span class="circle">3</span>
-                <span class="label">Pagamento</span>
-              </div>
-            </div>
-            <form id="orderForm">
-              <div class="form-step" data-step="1">
-                <h3>Peça agora. Entrega e instalação grátis!</h3>
-                <div class="field-group">
-                  <label>
-                    <input
-                      type="radio"
-                      name="deliveryTime"
-                      value="45min"
-                      checked
-                    />
-                    Receber em até 45 minutos
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="deliveryTime"
-                      value="agendar"
-                    />
-                    Agendar entrega
-                  </label>
-                </div>
-                <!-- Campos adicionais para agendamento, ocultos por padrão -->
-                <div id="scheduleFields" class="hidden">
-                  <div class="field-group">
-                    <label for="scheduleDate">Data:</label>
-                    <input type="date" id="scheduleDate" />
-                  </div>
-                    <div class="field-group">
-                      <label for="scheduleTime">Horário:</label>
-                      <input type="time" id="scheduleTime" />
-                    </div>
-                    <div class="field-group">
-                      <p>Local da troca:</p>
-                      <label class="inline-label">
-                        <input type="radio" name="scheduleLocation" value="same" checked />
-                        Mesmo endereço
-                      </label>
-                      <label class="inline-label">
-                        <input type="radio" name="scheduleLocation" value="decidir" />
-                        Decidir depois
-                      </label>
-                    </div>
-                </div>
-                <div class="field-group">
-                  <input type="text" id="name" placeholder="Nome *" required />
-                </div>
-                <div class="field-group">
-                  <input type="tel" id="phone" placeholder="Telefone *" required />
-                </div>
-                <div class="field-group">
-                  <input type="email" id="email" placeholder="Email *" required />
-                </div>
-                <!-- Botão para avançar ao passo 2 (endereço) com rótulo acessível -->
-                <button type="button" class="btn btn-primary" id="toStep2" aria-label="Avançar para endereço">
-                  Preencher endereço
-                </button>
-              </div>
-              <div class="form-step" data-step="2">
-                <h3>Receba em até 45&nbsp;minutos.</h3>
-                <div class="field-group">
-                  <input
-                    type="text"
-                    id="address"
-                    placeholder="Endereço, Rua ou Estabelecimento *"
-                    required
-                  />
-                </div>
-                <div class="field-group">
-                  <input type="text" id="number" placeholder="Número *" required />
-                </div>
-                <div class="field-group">
-                  <input type="text" id="neighborhood" placeholder="Bairro *" required />
-                </div>
-                <div class="field-group">
-                  <input
-                    type="text"
-                    id="complement"
-                    placeholder="Complemento / Ponto de referência"
-                  />
-                </div>
-                <!-- Botão para avançar ao passo 3 (pagamento) com rótulo acessível -->
-                <button type="button" class="btn btn-primary" id="toStep3" aria-label="Avançar para pagamento">
-                  Selecionar forma de pagamento
-                </button>
-              </div>
-              <div class="form-step" data-step="3">
-                <h3>Pague somente na entrega.</h3>
-                <div class="field-group">
-                  <label>
-                    <input type="radio" name="payment" value="credito" checked />
-                    Cartão de crédito
-                  </label>
-                  <label>
-                    <input type="radio" name="payment" value="debito" />
-                    Cartão de débito
-                  </label>
-                  <label>
-                    <input type="radio" name="payment" value="dinheiro" />
-                    Dinheiro
-                  </label>
-                  <label>
-                    <input type="radio" name="payment" value="pix" />
-                    PIX
-                  </label>
-                </div>
-                <div class="field-group">
-                  <select id="cardFlag">
-                    <option value="MasterCard">MasterCard</option>
-                    <option value="Visa">Visa</option>
-                    <option value="Elo">Elo</option>
-                    <option value="American Express">American Express</option>
-                  </select>
-                </div>
-                <div class="field-group">
-                  <select id="installments">
-                    <!-- opções serão preenchidas via JS conforme preço -->
-                  </select>
-                </div>
-                <div class="field-group">
-                  <input type="text" id="document" placeholder="CPF/CNPJ *" required />
-                </div>
-                <div class="field-group checkbox">
-                  <label>
-                    <input type="checkbox" id="returnBattery" checked />
-                    Venda condicionada à devolução da bateria inservível.
-                  </label>
-                </div>
-                <!-- Grupo separado para ações do passo 3 -->
-                <div class="form-actions">
-                  <!-- Botão de submissão do pedido com rótulo acessível -->
-                  <button type="submit" class="btn btn-primary" aria-label="Solicitar entrega">
-                    Solicitar entrega
-                  </button>
-                </div>
-              </div>
-            </form>
+        <div class="battery-card" data-brand="moura">
+          <div class="battery-info">
+            <h2 id="batteryModel">Moura M60SD</h2>
+            <p id="batterySpecs">60Ah • 12V • 540 CCA</p>
+            <ul class="battery-details">
+              <li>Garantia: <strong id="batteryWarranty">18 meses</strong></li>
+              <li>Dimensões: <strong id="batteryDims">242 x 175 x 190 mm</strong></li>
+              <li>Peso: <strong id="batteryWeight">15,2 kg</strong></li>
+            </ul>
+          </div>
+          <div class="battery-price">
+            <div class="price-line"><span>À vista</span><strong id="priceCash">R$ 499,00</strong></div>
+            <div class="price-line"><span>Em 10x</span><strong id="priceInstallments">R$ 55,90</strong></div>
           </div>
         </div>
-        <!-- Script de pedido gerado -->
-        <div id="orderSummary" class="order-summary hidden"></div>
+
+        <!-- Formulário pedido -->
+        <form id="orderForm" class="order-form">
+          <div class="actions">
+            <button type="submit" class="btn btn-primary" id="submitOrder">Solicitar entrega</button>
+          </div>
+        </form>
       </div>
     </section>
 
-    <!-- Seção de dúvidas e ajuda -->
-    <section class="faq">
+    <!-- Como funciona -->
+    <section id="como-funciona" class="how-it-works">
       <div class="container">
-        <h2>Dúvidas? Nós te ajudamos!</h2>
-        <div class="faq-item">
-          <button type="button" class="faq-question">Não encontrei a bateria para o meu carro. E agora?</button>
-          <div class="faq-answer">
-            <p>Clique em "Falar no WhatsApp" que nossa equipe identifica e recomenda a melhor opção. Trabalhamos com todas as marcas e modelos (Chevrolet, Volkswagen, Fiat, Toyota, Hyundai e muitos outros).</p>
-          </div>
+        <h2>Como funciona</h2>
+        <div class="steps">
+          <div class="step"><span class="num">1</span><h3>Busque sua cidade e veículo</h3><p>Informe onde você está...</p></div>
+          <div class="step"><span class="num">2</span><h3>Veja o preço e a garantia</h3><p>Transparência total...</p></div>
+          <div class="step"><span class="num">3</span><h3>Receba com instalação</h3><p>Motoboy ou técnico vai até você...</p></div>
         </div>
-        <div class="faq-item">
-          <button type="button" class="faq-question">E se o problema não for bateria?</button>
-          <div class="faq-answer">
-            <p>Avaliamos gratuitamente no local: teste de carga, alternador, fuga de corrente e conectores.</p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <button type="button" class="faq-question">Como faço para realizar o pagamento?</button>
-          <div class="faq-answer">
-            <p>Pagamento na entrega: cartão, PIX ou dinheiro. Emitimos nota fiscal.</p>
-          </div>
-        </div>
+      </div>
+    </section>
+
+    <!-- Vantagens -->
+    <section id="vantagens" class="benefits">
+      <div class="container">
+        <h2>Por que escolher a Baterias 1</h2>
+        <ul class="benefits-list">
+          <li>Atendimento rápido em Campina Grande e João Pessoa</li>
+          <li>Parceria com as melhores marcas</li>
+          <li>Instalação e teste inclusos</li>
+          <li>Garantia com nota fiscal</li>
+        </ul>
       </div>
     </section>
 
     <!-- Rodapé -->
-    <footer class="footer">
-      <div class="container">
-        <p>Atendimento 24h | contato@baterias1.com</p>
-        <p>Venda condicionada à devolução da bateria inservível (CONAMA 401/2008)</p>
-        <p>&copy; 2025 Baterias1. Todos os direitos reservados.</p>
+    <footer id="contato" class="footer">
+      <div class="container footer-grid">
+        <div><h3>Baterias 1</h3><p>Delivery de baterias com instalação no local.</p></div>
+        <div><h4>Contato</h4><p>WhatsApp: (83) 9 9999-9999</p><p>Campina Grande • João Pessoa</p></div>
+        <div><h4>Atendimento</h4><p>Seg a Sáb, 8h às 20h</p></div>
       </div>
+      <div class="container footer-bottom"><small>© 2025 Baterias 1. Todos os direitos reservados.</small></div>
     </footer>
 
-    <!-- Dados das baterias carregados como script para evitar problemas de CORS -->
-    <script src="bateriasData.js"></script>
-    <script src="script.js"></script>
-    <!-- Botão flutuante para contato via WhatsApp -->
-    <a
-      href="https://wa.me/5511970901461"
-      class="whatsapp-link"
-      target="_blank"
-      rel="noopener"
-      aria-label="Contato via WhatsApp"
-    >
+    <!-- Scripts -->
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/autocomplete-motor-versao.js"></script>
+    <script src="assets/js/enhancements.js"></script>
+
+    <!-- Bloco de melhorias (7 tópicos) -->
+    <script>
+      (function(){
+        function ready(fn){ document.readyState!=="loading" ? fn() : document.addEventListener("DOMContentLoaded",fn); }
+        ready(function(){
+          const header=document.querySelector(".header");
+          function focusAndScroll(el){
+            if(!el) return;
+            try{ el.focus({preventScroll:true}); }catch{}
+            const hdrH=header?header.getBoundingClientRect().height:0;
+            const y=el.getBoundingClientRect().top+window.scrollY-Math.max(hdrH+12,12);
+            window.scrollTo({top:y,behavior:"smooth"});
+          }
+          function resetGeral(){
+            ["cityInput","vehicleInput","vehicleResume","plate","customerName","customerPhone","address","city","scheduleDate","scheduleTime"]
+              .forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});
+            document.querySelectorAll('input[type="radio"]').forEach(r=>r.checked=false);
+            document.getElementById("resultSection")?.classList.add("hidden");
+            document.querySelectorAll(".battery-card.selected").forEach(c=>c.classList.remove("selected"));
+            document.getElementById("scheduleFields")?.classList.add("hidden");
+            document.getElementById("installmentsField")?.classList.add("hidden");
+            focusAndScroll(document.getElementById("openSelection")||document.getElementById("stepsOrder")||document.body);
+          }
+          if(header){header.style.position="sticky";header.style.top="0";header.style.zIndex="1000";}
+          resetGeral();
+          document.querySelector(".logo")?.addEventListener("click",e=>{e.preventDefault();resetGeral();window.scrollTo({top:0,behavior:"smooth"});});
+          document.getElementById("openSelection")?.addEventListener("click",resetGeral);
+
+          const selectionModal=document.getElementById("selectionModal");
+          const closeSelection=document.getElementById("closeSelection");
+          const cityInput=document.getElementById("cityInput");
+          const vehicleInput=document.getElementById("vehicleInput");
+          const selectVehicleBtn=document.getElementById("selectVehicle");
+          function openModal(){selectionModal?.classList.remove("hidden");}
+          function closeModal(){selectionModal?.classList.add("hidden");}
+          document.getElementById("stepsOrder")?.addEventListener("click",openModal);
+          document.getElementById("openSelection")?.addEventListener("click",openModal);
+          closeSelection?.addEventListener("click",closeModal);
+          cityInput?.addEventListener("change",()=>{if(cityInput.value.trim())focusAndScroll(vehicleInput);});
+          selectVehicleBtn?.addEventListener("click",()=>{
+            if(!vehicleInput?.value.trim()){vehicleInput?.focus();return;}
+            document.getElementById("resultSection")?.classList.remove("hidden");
+            closeModal();focusAndScroll(document.querySelector(".battery-card")||document.getElementById("resultSection"));
+          });
+
+          function prepararSelecaoCards(){
+            const cards=[...document.querySelectorAll(".battery-card")];
+            cards.forEach(card=>{
+              const hit=card.querySelector(".select-hit")||card;
+              hit.style.cursor="pointer";
+              hit.addEventListener("click",()=>{
+                cards.forEach(c=>c.classList.remove("selected"));
+                card.classList.add("selected");
+                const imm=document.querySelector('input[name="deliveryTime"][value="40min"]')||document.querySelector('input[name="deliveryTime"]');
+                if(imm) imm.checked=true;
+                document.getElementById("scheduleFields")?.classList.add("hidden");
+                focusAndScroll(imm);
+              });
+            });
+          }
+          const rs=document.getElementById("resultSection");
+          if(rs&&rs.classList.contains("hidden")){
+            const obs=new MutationObserver(()=>{if(!rs.classList.contains("hidden")){prepararSelecaoCards();obs.disconnect();}});
+            obs.observe(rs,{attributes:true});
+          } else prepararSelecaoCards();
+
+          const fmtBRL=v=>Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+          const installmentsField=document.getElementById("installmentsField");
+          const installmentDynamicLine=document.getElementById("installmentDynamicLine");
+          const installmentsSel=document.getElementById("installments");
+          function atualizarParcelas(){
+            const selCard=document.querySelector(".battery-card.selected");
+            let precoTxt=selCard?.querySelector(".battery-price .price-line strong")?.textContent||document.getElementById("priceCash")?.textContent||"0";
+            let preco=parseFloat(precoTxt.replace(/[^\d,.-]/g,'').replace('.','').replace(',','.'))||0;
+            const n=parseInt(installmentsSel?.value||"10",10);
+            const parcela=Math.floor((preco/n)*100)/100;
+            const resto=+(preco-parcela*(n-1)).toFixed(2);
+            if(installmentDynamicLine)installmentDynamicLine.textContent=`${n}x de ${fmtBRL(parcela)} (última ${fmtBRL(resto)})`;
+          }
+          document.querySelectorAll('input[name="payment"]').forEach(radio=>{
+            radio.addEventListener("change",()=>{
+              const credito=radio.checked&&radio.value==="credito";
+              installmentsField?.classList.toggle("hidden",!credito);
+              if(credito){atualizarParcelas();focusAndScroll(installmentsSel);}
+              else{focusAndScroll(document.getElementById("submitOrder"));}
+            });
+          });
+          installmentsSel?.addEventListener("change",()=>{atualizarParcelas();focusAndScroll(document.getElementById("submitOrder"));});
+
+          document.getElementById("customerName")?.addEventListener("change",()=>focusAndScroll(document.getElementById("customerPhone")));
+          document.getElementById("customerPhone")?.addEventListener("change",()=>focusAndScroll(document.getElementById("address")));
+          document.getElementById("address")?.addEventListener("change",()=>focusAndScroll(document.getElementById("city")));
+          document.getElementById("city")?.addEventListener("change",()=>focusAndScroll(document.querySelector('input[name="payment"]')));
+
+          const scheduleFields=document.getElementById("scheduleFields");
+          document.querySelectorAll('input[name="deliveryTime"]').forEach(radio=>{
+            radio.addEventListener("change",()=>{
+              if(radio.checked&&radio.value==="agendar"){
+                scheduleFields?.classList.remove("hidden");
+                const dia=document.getElementById("scheduleDate");
+                focusAndScroll(dia);
+                dia?.addEventListener("change",()=>focusAndScroll(document.getElementById("scheduleTime")),{once:true});
+              } else if(radio.checked){
+                scheduleFields?.classList.add("hidden");
+                focusAndScroll(document.getElementById("customerName"));
+              }
+            });
+          });
+
+          document.getElementById("orderForm")?.addEventListener("submit",e=>{
+            e.preventDefault();
+            const nome=document.getElementById("customerName")?.value||"";
+            const fone=document.getElementById("customerPhone")?.value||"";
+            const end=document.getElementById("address")?.value||"";
+            const cid=document.getElementById("city")?.value||"";
+            const veic=document.getElementById("vehicleResume")?.value||document.getElementById("vehicleInput")?.value||"";
+            const entrega=(document.querySelector('input[name="deliveryTime"]:checked')?.value||"").toUpperCase();
+            const pagamento=(document.querySelector('input[name="payment"]:checked')?.value||"").toUpperCase();
+            const selCard=document.querySelector(".battery-card.selected");
+            const marca=selCard?.dataset.brand||document.getElementById("batteryModel")?.textContent||"";
+            const preco=selCard?.dataset.price||document.getElementById("priceCash")?.textContent||"";
+            const msg=`Pedido Baterias 1\nNome: ${nome}\nWhatsApp: ${fone}\nEndereço: ${end} - ${cid}\nVeículo: ${veic}\nBateria: ${marca} - ${preco}\nEntrega: ${entrega}\nPagamento: ${pagamento}`;
+            const numero="5511970901461";
+            const url="https://wa.me/"+numero+"?text="+encodeURIComponent(msg);
+            window.open(url,"_blank");focusAndScroll(document.getElementById("orderForm"));
+          });
+
+          ["customerName","customerPhone","address","city","vehicleInput","vehicleResume","plate"].forEach(id=>{
+            const el=document.getElementById(id);if(el)el.setAttribute("autocomplete","off");
+          });
+        });
+      })();
+    </script>
+
+    <!-- Links fixos -->
+    <a href="https://wa.me/5511970901461" class="whatsapp-link" target="_blank" rel="noopener" aria-label="Contato via WhatsApp">
       <img src="whatsapp.svg" alt="WhatsApp" />
     </a>
-  
-<a class="btn-painel" href="./login.html" aria-label="Abrir painel (login)">Painel</a>
-<script src="assets/js/autocomplete-motor-versao.js"></script>
-  <script src="assets/js/enhancements.js"></script>
-    <script>
-/* ===========================
-   UTIL: foco + scroll sem cobrir o header
-   =========================== */
-function focusAndScroll(el) {
-  if (!el) return;
-  el.focus({preventScroll:true});
-  const header = document.querySelector('.header');
-  const hdrH = header ? header.getBoundingClientRect().height : 0;
-  const y = el.getBoundingClientRect().top + window.scrollY - Math.max(hdrH + 12, 12);
-  window.scrollTo({top: y, behavior: 'smooth'});
-}
-
-/* ===========================
-   RESET GERAL (Item 1 e 7)
-   =========================== */
-function resetGeral() {
-  // Limpa campos do modal
-  const cityInput = document.getElementById('cityInput');
-  const vehicleInput = document.getElementById('vehicleInput');
-  if (cityInput) cityInput.value = '';
-  if (vehicleInput) vehicleInput.value = '';
-
-  // Esconde Fluxo 2/3 (resultados e pedido)
-  const resultSection = document.getElementById('resultSection');
-  if (resultSection) resultSection.classList.add('hidden');
-
-  // Remove seleção de cards
-  document.querySelectorAll('.battery-card.selected').forEach(c => c.classList.remove('selected'));
-
-  // Limpa formulário cliente/entrega/pagamento
-  const form = document.getElementById('orderForm');
-  if (form) {
-    form.reset();
-    // Esconde campos condicionais
-    const scheduleFields = document.getElementById('scheduleFields');
-    const installmentsField = document.getElementById('installmentsField');
-    if (scheduleFields) scheduleFields.classList.add('hidden');
-    if (installmentsField) installmentsField.classList.add('hidden');
-  }
-
-  // Evita retenção indevida (não usamos localStorage aqui)
-  // Leva o usuário para a "Entrada" (hero) e foca o botão de abrir modal
-  const openBtn = document.getElementById('openSelection') || document.getElementById('stepsOrder');
-  focusAndScroll(openBtn || document.body);
-}
-
-// Reset ao carregar/recarregar
-document.addEventListener('DOMContentLoaded', resetGeral);
-
-// Reset ao clicar no LOGO e no botão superior
-document.querySelector('.logo')?.addEventListener('click', (e)=>{ e.preventDefault?.(); resetGeral(); window.scrollTo({top:0, behavior:'smooth'}); });
-document.getElementById('openSelection')?.addEventListener('click', ()=> resetGeral());
-
-/* ===========================
-   AVANÇO AUTOMÁTICO entre etapas (Item 2)
-   =========================== */
-const selectionModal = document.getElementById('selectionModal');
-const closeSelection = document.getElementById('closeSelection');
-const cityInput = document.getElementById('cityInput');
-const vehicleInput = document.getElementById('vehicleInput');
-const selectVehicleBtn = document.getElementById('selectVehicle');
-
-function openModal(){ selectionModal?.classList.remove('hidden'); }
-function closeModal(){ selectionModal?.classList.add('hidden'); }
-
-document.getElementById('stepsOrder')?.addEventListener('click', openModal);
-document.getElementById('openSelection')?.addEventListener('click', openModal);
-closeSelection?.addEventListener('click', closeModal);
-
-// 2.1 Escolheu cidade -> foca veículo
-cityInput?.addEventListener('change', ()=> {
-  if (cityInput.value.trim().length > 0) {
-    focusAndScroll(vehicleInput);
-  }
-});
-
-// 2.2 Confirmou veículo -> mostra Fluxo 2 (cards) já no topo
-selectVehicleBtn?.addEventListener('click', ()=> {
-  const resultSection = document.getElementById('resultSection');
-  if (vehicleInput?.value.trim()) {
-    resultSection?.classList.remove('hidden');
-    closeModal();
-    // Foca o topo dos cards
-    const firstCard = document.querySelector('.battery-card') || resultSection;
-    focusAndScroll(firstCard);
-  } else {
-    vehicleInput?.focus();
-  }
-});
-
-/* ===========================
-   SELEÇÃO ÚNICA DE BATERIA + REGRAS DE PREÇO (Item 3 e 4)
-   =========================== */
-
-// Helper: formata moeda
-const fmtBRL = (v)=> v.toLocaleString('pt-BR',{style:'currency', currency:'BRL'});
-
-// Determina preços base (usando Moura como âncora, item 4)
-function getBaseMoura() {
-  const el = document.getElementById('priceCash');
-  if (!el) return null;
-  const txt = el.textContent.replace(/[^\d,.-]/g,'').replace('.','').replace(',','.');
-  const val = parseFloat(txt);
-  return isNaN(val) ? null : val;
-}
-
-// Atualiza os preços nos cards a partir do Moura
-function aplicarRegrasPreco() {
-  const baseMoura = getBaseMoura();
-  if (baseMoura == null) return;
-
-  const cards = [...document.querySelectorAll('.battery-card')];
-  if (!cards.length) return;
-
-  // Espera-se que cada card tenha data-brand: 'moura' | 'heliar' | 'economica'
-  cards.forEach(card => {
-    const brand = (card.dataset.brand || '').toLowerCase();
-    let preco = baseMoura;
-    if (brand === 'heliar') {
-      preco = +(baseMoura * 0.97).toFixed(2);
-    } else if (brand === 'economica') {
-      preco = +((baseMoura * 0.97) * 0.90).toFixed(2);
-    }
-    const priceStrong = card.querySelector('.battery-price .price-line strong');
-    if (priceStrong) priceStrong.textContent = fmtBRL(preco);
-
-    // Parcelamento default 10x
-    const parcEl = card.querySelector('.installment-line');
-    if (parcEl) {
-      const n = 10;
-      const parcela = Math.floor((preco/n)*100)/100; // arredonda pra baixo
-      const resto = +(preco - parcela*(n-1)).toFixed(2); // última parcela ajustada
-      parcEl.textContent = `${n}x de ${fmtBRL(parcela)} (última ${fmtBRL(resto)})`;
-    }
-  });
-}
-
-// Seleção única
-function prepararSelecaoCards() {
-  const cards = [...document.querySelectorAll('.battery-card')];
-  if (!cards.length) return;
-
-  // Garante aplicar preços ao carregar Fluxo 2
-  aplicarRegrasPreco();
-
-  cards.forEach((card) => {
-    // Se não houver botão/ícone, torna a imagem/área clicável
-    const hit = card.querySelector('.select-hit') || card;
-    hit.style.cursor = 'pointer';
-    hit.addEventListener('click', () => {
-      cards.forEach(c => c.classList.remove('selected'));
-      card.classList.add('selected');
-
-      // Guarda preço do card selecionado para parcelamento dinâmico
-      const priceEl = card.querySelector('.battery-price .price-line strong');
-      const price = priceEl ? parseFloat(priceEl.textContent.replace(/[^\d,.-]/g,'').replace('.','').replace(',','.')) : null;
-      if (!isNaN(price)) card.dataset.price = String(price);
-
-      // Avança para Entrega (Fluxo 3): foca entrega imediata
-      const deliveryImediata = document.querySelector('input[name="deliveryTime"][value="40min"]');
-      focusAndScroll(deliveryImediata || document.querySelector('input[name="deliveryTime"]'));
-      if (deliveryImediata) deliveryImediata.checked = true;
-      document.getElementById('scheduleFields')?.classList.add('hidden');
-    });
-  });
-}
-
-// Chama quando o Fluxo 2 aparece
-const observer = new MutationObserver(()=> {
-  if (!document.getElementById('resultSection')?.classList.contains('hidden')) {
-    prepararSelecaoCards();
-    observer.disconnect();
-  }
-});
-observer.observe(document.body, { attributes:true, childList:true, subtree:true });
-
-/* ===========================
-   ENTREGA + AGENDAMENTO (Item 2.3)
-   =========================== */
-const scheduleFields = document.getElementById('scheduleFields');
-document.querySelectorAll('input[name="deliveryTime"]').forEach(radio => {
-  radio.addEventListener('change', () => {
-    if (radio.checked && radio.value === 'agendar') {
-      scheduleFields?.classList.remove('hidden');
-      const dia = document.getElementById('scheduleDate');
-      focusAndScroll(dia);
-      // Depois de escolher dia, foca hora
-      dia?.addEventListener('change', ()=> focusAndScroll(document.getElementById('scheduleTime')), { once:true });
-    } else if (radio.checked) {
-      scheduleFields?.classList.add('hidden');
-      // Avança para Nome
-      focusAndScroll(document.getElementById('customerName'));
-    }
-  });
-});
-
-/* ===========================
-   DADOS DO CLIENTE -> ENDEREÇO -> PAGAMENTO (Item 2.4 ~ 2.7)
-   =========================== */
-document.getElementById('customerName')?.addEventListener('change', ()=> focusAndScroll(document.getElementById('customerPhone')));
-document.getElementById('customerPhone')?.addEventListener('change', ()=> focusAndScroll(document.getElementById('address')));
-document.getElementById('address')?.addEventListener('change', ()=> focusAndScroll(document.getElementById('city')));
-document.getElementById('city')?.addEventListener('change', ()=> {
-  // Foca pagamento
-  const p = document.querySelector('input[name="payment"]');
-  focusAndScroll(p);
-});
-
-// Pagamento e parcelas dinâmicas
-const installmentsField = document.getElementById('installmentsField');
-const installmentDynamicLine = document.getElementById('installmentDynamicLine');
-const installmentsSel = document.getElementById('installments');
-document.querySelectorAll('input[name="payment"]').forEach(radio => {
-  radio.addEventListener('change', () => {
-    const credito = radio.checked && radio.value === 'credito';
-    installmentsField?.classList.toggle('hidden', !credito);
-    if (credito) {
-      // Calcula a partir do card selecionado
-      const sel = document.querySelector('.battery-card.selected');
-      // fallback: usa priceCash
-      let preco =
-        sel?.dataset.price
-          ? parseFloat(sel.dataset.price)
-          : parseFloat((document.getElementById('priceCash')?.textContent || '0').replace(/[^\d,.-]/g,'').replace('.','').replace(',','.'));
-      if (isNaN(preco)) preco = 0;
-      const n = parseInt(installmentsSel?.value || '10', 10);
-      const parcela = Math.floor((preco/n)*100)/100;
-      const resto = +(preco - parcela*(n-1)).toFixed(2);
-      if (installmentDynamicLine) installmentDynamicLine.textContent = `${n}x de ${fmtBRL(parcela)} (última ${fmtBRL(resto)})`;
-      focusAndScroll(installmentsSel);
-    } else {
-      // Avança para solicitar entrega
-      focusAndScroll(document.getElementById('submitOrder'));
-    }
-  });
-});
-installmentsSel?.addEventListener('change', ()=> {
-  const sel = document.querySelector('.battery-card.selected');
-  let preco =
-    sel?.dataset.price
-      ? parseFloat(sel.dataset.price)
-      : parseFloat((document.getElementById('priceCash')?.textContent || '0').replace(/[^\d,.-]/g,'').replace('.','').replace(',','.'));
-  if (isNaN(preco)) preco = 0;
-  const n = parseInt(installmentsSel.value || '10', 10);
-  const parcela = Math.floor((preco/n)*100)/100;
-  const resto = +(preco - parcela*(n-1)).toFixed(2);
-  if (installmentDynamicLine) installmentDynamicLine.textContent = `${n}x de ${fmtBRL(parcela)} (última ${fmtBRL(resto)})`;
-  // Foca CTA
-  focusAndScroll(document.getElementById('submitOrder'));
-});
-
-/* ===========================
-   SUBMISSÃO -> WhatsApp (Item 2.8)
-   =========================== */
-document.getElementById('orderForm')?.addEventListener('submit', (e)=> {
-  e.preventDefault();
-  const nome = document.getElementById('customerName')?.value || '';
-  const fone = document.getElementById('customerPhone')?.value || '';
-  const end  = document.getElementById('address')?.value || '';
-  const cid  = document.getElementById('city')?.value || '';
-  const veic = document.getElementById('vehicleResume')?.value || document.getElementById('vehicleInput')?.value || '';
-  const entrega = (document.querySelector('input[name="deliveryTime"]:checked')?.value || '').toUpperCase();
-  const pagamento = (document.querySelector('input[name="payment"]:checked')?.value || '').toUpperCase();
-
-  const selCard = document.querySelector('.battery-card.selected');
-  const marca = selCard?.dataset.brand || document.getElementById('batteryModel')?.textContent || '';
-  const preco = selCard?.dataset.price || document.getElementById('priceCash')?.textContent || '';
-
-  const msg =
-`Pedido Baterias 1
-Nome: ${nome}
-WhatsApp: ${fone}
-Endereço: ${end} - ${cid}
-Veículo: ${veic}
-Bateria: ${marca} - ${preco}
-Entrega: ${entrega}
-Pagamento: ${pagamento}`;
-
-  const numero = '5511970901461'; // ajuste para seu número final
-  const url = 'https://wa.me/' + numero + '?text=' + encodeURIComponent(msg);
-  window.open(url, '_blank');
-
-  // Mantém Fluxo 3 visível
-  focusAndScroll(document.getElementById('orderForm'));
-});
-
-/* ===========================
-   HARDENING (Item 7)
-   =========================== */
-// Desabilita autocomplete nos principais campos sensíveis
-['customerName','customerPhone','address','city','vehicleInput','vehicleResume','plate'].forEach(id=>{
-  const el = document.getElementById(id);
-  if (el) el.setAttribute('autocomplete','off');
-});
-
-</script>
-
-</body>
+    <a class="btn-painel" href="./login.html" aria-label="Abrir painel (login)">Painel</a>
+  </body>
 </html>
