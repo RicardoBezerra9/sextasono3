@@ -24,7 +24,7 @@
     <!-- Seção de hero com a proposta de valor -->
     <section class="hero">
       <div class="container">
-        <h1>A bateria do seu carro entregue e instalada em até 50 minutos</h1>
+        <h1>A bateria certa para seu carro</h1>
         <p class="highlight">Pague somente na entrega</p>
         <div class="hero-actions">
           <!-- Botões da seção hero com rótulos acessíveis -->
@@ -62,19 +62,25 @@
       <div class="modal-content">
         <!-- Botão para fechar o modal com rótulo acessível -->
         <button class="modal-close" id="closeSelection" aria-label="Fechar seleção">×</button>
-        <h3>Informe sua cidade</h3>
-        <div class="field-group">
-          <input
-            type="text"
-            id="cityInput"
-            placeholder="Buscar cidades"
-            list="cityList"
-          />
-          <datalist id="cityList"></datalist>
-        </div>
-        <!-- Botão para usar a localização atual com rótulo acessível -->
-        <button class="btn btn-primary" id="useLocation" aria-label="Usar minha localização">Usar minha localização</button>
-        <h3>Informe seu veículo</h3>
+<h3>Informe sua cidade</h3>
+
+<div class="field-group city-group">
+  <input
+    type="text"
+    id="cityInput"
+    placeholder="Buscar cidades"
+    list="cityList"
+  />
+  <datalist id="cityList"></datalist>
+
+  <!-- Botão apenas com ícone -->
+  <button type="button" class="btn btn-primary btn-icon" id="useLocation" title="Usar minha localização">
+    <img src="assets/icons/location.png" alt="Localização" />
+  </button>
+</div>
+
+<h3>Informe seu veículo</h3>
+
         <div class="field-group">
           <input
             type="text"
@@ -310,56 +316,3 @@
   <script src="assets/js/enhancements.js"></script>
 </body>
 </html>
-<section class="results-3cards" id="resultVehicleSection" style="display:block;">
-  <div class="container">
-    <h3 id="vehicleChosenText" class="vehicle-chosen"></h3>
-    <div class="cards-row" id="brandCardsRow"></div>
-    <small id="priceNote" class="muted"></small>
-  </div>
-</section>
-<section class="order" id="orderSection">
-  <div class="container">
-    <h3>Entrega</h3>
-    <div class="radios">
-      <label><input type="radio" name="deliveryTime" value="imediato" checked /> Imediata</label>
-      <label><input type="radio" name="deliveryTime" value="agendar" /> Agendada</label>
-    </div>
-    <div class="group">
-      <div>
-        <label>Dia</label>
-        <button type="button" id="dayPickerBtn" class="picker-btn">Escolher</button>
-        <input type="hidden" id="scheduleDate" />
-        <div id="dayPickerPanel" class="picker-panel">
-          <button type="button" data-day="today">Hoje</button>
-          <button type="button" data-day="tomorrow">Amanhã</button>
-        </div>
-      </div>
-      <div>
-        <label>Hora</label>
-        <button type="button" id="timePickerBtn" class="picker-btn">Escolher</button>
-        <input type="hidden" id="scheduleTime" />
-        <div id="timePickerPanel" class="picker-panel"></div>
-      </div>
-    </div>
-    <h3>Pagamento</h3>
-    <div class="radios">
-      <label><input type="radio" name="payment" value="pix" /> Pix</label>
-      <label><input type="radio" name="payment" value="debito" /> Débito</label>
-      <label><input type="radio" name="payment" value="credito" /> Crédito</label>
-      <label><input type="radio" name="payment" value="dinheiro" /> Dinheiro</label>
-    </div>
-    <div>
-      <label>Parcelas (se crédito)</label>
-      <select id="installments">
-        <option>1x</option><option>2x</option><option>3x</option><option>4x</option><option>5x</option>
-        <option>6x</option><option>7x</option><option>8x</option><option>9x</option><option selected>10x</option>
-      </select>
-    </div>
-    <div id="installmentDynamicLine" class="installment-line"></div>
-    <div style="margin-top:10px;">
-      <label>WhatsApp da loja</label>
-      <input id="whatsNumber" value="5583999999999" />
-    </div>
-    <button id="submitOrder" class="btn-primary" style="margin-top:12px;">Solicitar Entrega</button>
-  </div>
-</section>
