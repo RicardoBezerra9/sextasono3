@@ -3,38 +3,65 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Baterias 1 – Delivery de Baterias</title>
+    <title>Baterias 1 – Delivery de Baterias</title>
     <link rel="stylesheet" href="style.css" />
-  <style>.btn-painel{position:fixed;left:16px;bottom:16px;background:#6a1b9a;color:#fff;border:none;border-radius:10px;padding:12px 16px;box-shadow:0 6px 18px rgba(0,0,0,.15);font-weight:700;letter-spacing:.2px;cursor:pointer;z-index:9999} .btn-painel:hover{filter:brightness(1.05)}</style>
-  <link rel="stylesheet" href="assets/css/enhancements.css" />
-</head>
+    <style>
+      /* Mantém seu botão Painel */
+      .btn-painel{
+        position:fixed;left:16px;bottom:16px;background:#6a1b9a;color:#fff;border:none;border-radius:10px;
+        padding:12px 16px;box-shadow:0 6px 18px rgba(0,0,0,.15);font-weight:700;letter-spacing:.2px;cursor:pointer;z-index:9999
+      }
+      .btn-painel:hover{filter:brightness(1.05)}
+
+      /* Header fixo (sem mudar paleta) */
+      .header{ position: sticky; top: 0; z-index: 1000; background: inherit; }
+
+      /* Utilitários leves (aditivo) */
+      .hidden{display:none !important}
+      .b1-flex{display:flex;gap:12px;align-items:center}
+      .b1-row{display:flex;flex-wrap:wrap;gap:16px}
+      .b1-col{flex:1 1 280px}
+      .b1-card{border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:16px;box-shadow:0 8px 24px rgba(0,0,0,.06)}
+      .b1-card.is-selected{outline:2px solid rgba(0,0,0,.2);box-shadow:0 10px 28px rgba(0,0,0,.12)}
+      .b1-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+      .b1-hit{min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px}
+      .b1-preco{font-weight:700;font-size:clamp(18px, 3.2vw, 28px);margin:.25rem 0 .25rem}
+      .b1-parcelas{opacity:.9;font-size:.95em;margin:.25rem 0 .5rem}
+      .b1-meta{display:grid;row-gap:4px;margin:.25rem 0 .5rem}
+      .b1-media{font-size:.9em;opacity:.85;display:flex;align-items:center;gap:.5rem}
+      .b1-benef ul{margin:.5rem 0 0;padding:0;list-style:none}
+      .b1-benef li{display:flex;align-items:center;gap:.4rem;white-space:nowrap;font-size:.95em}
+      .b1-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+      @media (max-width: 900px){.b1-grid-3{grid-template-columns:1fr}}
+      /* compacta cards ~30–40% verticalmente */
+      .battery-card .b1-card>*{margin-top:.25rem;margin-bottom:.25rem}
+    </style>
+    <link rel="stylesheet" href="assets/css/enhancements.css" />
+  </head>
   <body>
     <!-- Header com logotipo e botão de ação principal -->
     <header class="header">
       <div class="container header-content">
         <div class="logo">
-          <!-- A logomarca é referenciada no mesmo diretório para simplificar o caminho -->
-          <img src="logo_baterias1.jpeg" alt="Logomarca Baterias 1" />
+          <img src="logo_baterias1.jpeg" alt="Logomarca Baterias 1" />
         </div>
-        <!-- Botão de chamada principal com rótulo acessível -->
         <button class="btn btn-primary" id="ctaStart" aria-label="Peça agora">Peça agora</button>
       </div>
     </header>
 
-    <!-- Seção de hero com a proposta de valor -->
+    <!-- Seção de hero -->
     <section class="hero">
       <div class="container">
         <h1>A bateria certa para seu carro</h1>
         <p class="highlight">Pague somente na entrega</p>
         <div class="hero-actions">
-          <!-- Botões da seção hero com rótulos acessíveis -->
           <button class="btn btn-primary" id="heroOrder" aria-label="Peça agora">Peça agora</button>
           <button class="btn btn-secondary" id="heroPrices" aria-label="Confira os preços">Confira os preços</button>
         </div>
       </div>
     </section>
 
-    <!-- Seção explicando o passo a passo do serviço -->
+    <!-- Passo a passo -->
     <section class="steps">
       <div class="container">
         <h2>Precisando de bateria para o seu carro?</h2>
@@ -49,64 +76,50 @@
           </div>
           <div class="step-item">
             <span class="step-number">3</span>
-            <p>A Bateria 1 vai até você com entrega e instalação grátis</p>
+            <p>A Bateria 1 vai até você com entrega e instalação grátis</p>
           </div>
         </div>
-        <!-- Botão de pedido na seção de etapas com rótulo acessível -->
         <button class="btn btn-primary" id="stepsOrder" aria-label="Peça agora">Peça agora</button>
       </div>
     </section>
 
-    <!-- Modal de seleção de cidade e veículo -->
-    <div id="selectionModal" class="modal hidden">
+    <!-- Modal de seleção -->
+    <div id="selectionModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Seleção de cidade e veículo">
       <div class="modal-content">
-        <!-- Botão para fechar o modal com rótulo acessível -->
         <button class="modal-close" id="closeSelection" aria-label="Fechar seleção">×</button>
-<h3>Informe sua cidade</h3>
 
-<div class="field-group city-group">
-  <input
-    type="text"
-    id="cityInput"
-    placeholder="Buscar cidades"
-    list="cityList"
-  />
-  <datalist id="cityList"></datalist>
+        <h3>Informe sua cidade</h3>
+        <div class="field-group city-group b1-flex">
+          <input type="text" id="cityInput" placeholder="Buscar cidades" list="cityList" autocomplete="off" />
+          <datalist id="cityList"></datalist>
+          <button type="button" class="btn btn-primary btn-icon" id="useLocation" title="Usar minha localização">
+            <img src="assets/icons/location.png" alt="Localização" />
+          </button>
+        </div>
 
-  <!-- Botão apenas com ícone -->
-  <button type="button" class="btn btn-primary btn-icon" id="useLocation" title="Usar minha localização">
-    <img src="assets/icons/location.png" alt="Localização" />
-  </button>
-</div>
-
-<h3>Informe seu veículo</h3>
-
+        <h3>Informe seu veículo</h3>
         <div class="field-group">
-          <input
-            type="text"
-            id="vehicleInput"
-            placeholder="Marca, modelo, ano e versão"
-            list="vehicleList"
-            autocomplete="off"
-          />
+          <input type="text" id="vehicleInput" placeholder="Marca, modelo, ano e versão" list="vehicleList" autocomplete="off" />
           <datalist id="vehicleList"></datalist>
         </div>
-        <!-- Botão para confirmar o veículo selecionado com rótulo acessível -->
+
         <button class="btn btn-primary" id="selectVehicle" aria-label="Selecionar veículo">Selecionar</button>
       </div>
     </div>
 
-    <!-- Seção de cartão de bateria e formulário de pedido -->
-    <section id="orderSection" class="order-section hidden">
+    <!-- Seção de pedido -->
+    <section id="orderSection" class="order-section hidden" aria-live="polite">
       <div class="container">
         <div class="order-container">
-          <!-- Cartão de bateria fica fixo na lateral -->
-          <div id="batteryCard" class="battery-card"></div>
-          <!-- Painel de formulários -->
+          <!-- Fluxo 2: Cards -->
+          <div id="batteryCard" class="battery-card">
+            <!-- Os cards são injetados pelo script abaixo para manter seu layout base -->
+          </div>
+
+          <!-- Painel de formulários (Fluxo 3) -->
           <div class="order-form-panel">
-            <!-- Barra de progresso horizontal com rótulos -->
             <div class="progress">
-              <div class="progress-step" data-step="1">
+              <div class="progress-step active" data-step="1">
                 <span class="circle">1</span>
                 <span class="label">Seus dados</span>
               </div>
@@ -119,151 +132,91 @@
                 <span class="label">Pagamento</span>
               </div>
             </div>
-            <form id="orderForm">
+
+            <form id="orderForm" autocomplete="off">
+              <!-- Passo 1 -->
               <div class="form-step" data-step="1">
                 <h3>Peça agora. Entrega e instalação grátis!</h3>
+
                 <div class="field-group">
-                  <label>
-                    <input
-                      type="radio"
-                      name="deliveryTime"
-                      value="45min"
-                      checked
-                    />
-                    Receber em até 45 minutos
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="deliveryTime"
-                      value="agendar"
-                    />
-                    Agendar entrega
-                  </label>
+                  <label><input type="radio" name="deliveryTime" value="45min" checked /> Receber em até 45 minutos</label>
+                  <label><input type="radio" name="deliveryTime" value="agendar" /> Agendar entrega</label>
                 </div>
-                <!-- Campos adicionais para agendamento, ocultos por padrão -->
+
                 <div id="scheduleFields" class="hidden">
                   <div class="field-group">
                     <label for="scheduleDate">Data:</label>
                     <input type="date" id="scheduleDate" />
                   </div>
-                    <div class="field-group">
-                      <label for="scheduleTime">Horário:</label>
-                      <input type="time" id="scheduleTime" />
-                    </div>
-                    <div class="field-group">
-                      <p>Local da troca:</p>
-                      <label class="inline-label">
-                        <input type="radio" name="scheduleLocation" value="same" checked />
-                        Mesmo endereço
-                      </label>
-                      <label class="inline-label">
-                        <input type="radio" name="scheduleLocation" value="decidir" />
-                        Decidir depois
-                      </label>
-                    </div>
+                  <div class="field-group">
+                    <label for="scheduleTime">Horário:</label>
+                    <input type="time" id="scheduleTime" step="1800" />
+                  </div>
+                  <div class="field-group">
+                    <p>Local da troca:</p>
+                    <label class="inline-label"><input type="radio" name="scheduleLocation" value="same" checked /> Mesmo endereço</label>
+                    <label class="inline-label"><input type="radio" name="scheduleLocation" value="decidir" /> Decidir depois</label>
+                  </div>
                 </div>
-                <div class="field-group">
-                  <input type="text" id="name" placeholder="Nome *" required />
-                </div>
-                <div class="field-group">
-                  <input type="tel" id="phone" placeholder="Telefone *" required />
-                </div>
-                <div class="field-group">
-                  <input type="email" id="email" placeholder="Email *" required />
-                </div>
-                <!-- Botão para avançar ao passo 2 (endereço) com rótulo acessível -->
-                <button type="button" class="btn btn-primary" id="toStep2" aria-label="Avançar para endereço">
-                  Preencher endereço
-                </button>
+
+                <div class="field-group"><input type="text" id="name" placeholder="Nome *" required /></div>
+                <div class="field-group"><input type="tel" id="phone" placeholder="Telefone *" required /></div>
+                <div class="field-group"><input type="email" id="email" placeholder="Email *" required /></div>
+
+                <button type="button" class="btn btn-primary" id="toStep2" aria-label="Avançar para endereço">Preencher endereço</button>
               </div>
-              <div class="form-step" data-step="2">
+
+              <!-- Passo 2 -->
+              <div class="form-step hidden" data-step="2">
                 <h3>Receba em até 45&nbsp;minutos.</h3>
-                <div class="field-group">
-                  <input
-                    type="text"
-                    id="address"
-                    placeholder="Endereço, Rua ou Estabelecimento *"
-                    required
-                  />
-                </div>
-                <div class="field-group">
-                  <input type="text" id="number" placeholder="Número *" required />
-                </div>
-                <div class="field-group">
-                  <input type="text" id="neighborhood" placeholder="Bairro *" required />
-                </div>
-                <div class="field-group">
-                  <input
-                    type="text"
-                    id="complement"
-                    placeholder="Complemento / Ponto de referência"
-                  />
-                </div>
-                <!-- Botão para avançar ao passo 3 (pagamento) com rótulo acessível -->
-                <button type="button" class="btn btn-primary" id="toStep3" aria-label="Avançar para pagamento">
-                  Selecionar forma de pagamento
-                </button>
+                <div class="field-group"><input type="text" id="address" placeholder="Endereço, Rua ou Estabelecimento *" required /></div>
+                <div class="field-group"><input type="text" id="number" placeholder="Número *" required /></div>
+                <div class="field-group"><input type="text" id="neighborhood" placeholder="Bairro *" required /></div>
+                <div class="field-group"><input type="text" id="complement" placeholder="Complemento / Ponto de referência" /></div>
+                <button type="button" class="btn btn-primary" id="toStep3" aria-label="Avançar para pagamento">Selecionar forma de pagamento</button>
               </div>
-              <div class="form-step" data-step="3">
+
+              <!-- Passo 3 -->
+              <div class="form-step hidden" data-step="3">
                 <h3>Pague somente na entrega.</h3>
+
                 <div class="field-group">
-                  <label>
-                    <input type="radio" name="payment" value="credito" checked />
-                    Cartão de crédito
-                  </label>
-                  <label>
-                    <input type="radio" name="payment" value="debito" />
-                    Cartão de débito
-                  </label>
-                  <label>
-                    <input type="radio" name="payment" value="dinheiro" />
-                    Dinheiro
-                  </label>
-                  <label>
-                    <input type="radio" name="payment" value="pix" />
-                    PIX
-                  </label>
+                  <label><input type="radio" name="payment" value="credito" checked /> Cartão de crédito</label>
+                  <label><input type="radio" name="payment" value="debito" /> Cartão de débito</label>
+                  <label><input type="radio" name="payment" value="dinheiro" /> Dinheiro</label>
+                  <label><input type="radio" name="payment" value="pix" /> PIX</label>
                 </div>
-                <div class="field-group">
-                  <select id="cardFlag">
-                    <option value="MasterCard">MasterCard</option>
-                    <option value="Visa">Visa</option>
-                    <option value="Elo">Elo</option>
-                    <option value="American Express">American Express</option>
-                  </select>
-                </div>
-                <div class="field-group">
-                  <select id="installments">
-                    <!-- opções serão preenchidas via JS conforme preço -->
-                  </select>
-                </div>
-                <div class="field-group">
-                  <input type="text" id="document" placeholder="CPF/CNPJ *" required />
-                </div>
+
+                <div class="field-group"><select id="cardFlag">
+                  <option value="MasterCard">MasterCard</option>
+                  <option value="Visa">Visa</option>
+                  <option value="Elo">Elo</option>
+                  <option value="American Express">American Express</option>
+                </select></div>
+
+                <div class="field-group"><select id="installments"></select></div>
+
+                <div class="field-group"><input type="text" id="document" placeholder="CPF/CNPJ *" required /></div>
+
                 <div class="field-group checkbox">
-                  <label>
-                    <input type="checkbox" id="returnBattery" checked />
+                  <label><input type="checkbox" id="returnBattery" checked />
                     Venda condicionada à devolução da bateria inservível.
                   </label>
                 </div>
-                <!-- Grupo separado para ações do passo 3 -->
+
                 <div class="form-actions">
-                  <!-- Botão de submissão do pedido com rótulo acessível -->
-                  <button type="submit" class="btn btn-primary" aria-label="Solicitar entrega">
-                    Solicitar entrega
-                  </button>
+                  <button type="submit" class="btn btn-primary" aria-label="Solicitar entrega">Solicitar entrega</button>
                 </div>
               </div>
             </form>
           </div>
         </div>
-        <!-- Script de pedido gerado -->
+
         <div id="orderSummary" class="order-summary hidden"></div>
       </div>
     </section>
 
-    <!-- Seção de dúvidas e ajuda -->
+    <!-- FAQ -->
     <section class="faq">
       <div class="container">
         <h2>Dúvidas? Nós te ajudamos!</h2>
@@ -297,22 +250,367 @@
       </div>
     </footer>
 
-    <!-- Dados das baterias carregados como script para evitar problemas de CORS -->
+    <!-- Seus scripts existentes -->
     <script src="bateriasData.js"></script>
     <script src="script.js"></script>
-    <!-- Botão flutuante para contato via WhatsApp -->
-    <a
-      href="https://wa.me/5511970901461"
-      class="whatsapp-link"
-      target="_blank"
-      rel="noopener"
-      aria-label="Contato via WhatsApp"
-    >
+
+    <!-- WhatsApp flutuante -->
+    <a href="https://wa.me/5511970901461" class="whatsapp-link" target="_blank" rel="noopener" aria-label="Contato via WhatsApp">
       <img src="whatsapp.svg" alt="WhatsApp" />
     </a>
-  
-<a class="btn-painel" href="./login.html" aria-label="Abrir painel (login)">Painel</a>
-<script src="assets/js/autocomplete-motor-versao.js"></script>
-  <script src="assets/js/enhancements.js"></script>
-</body>
+
+    <a class="btn-painel" href="./login.html" aria-label="Abrir painel (login)">Painel</a>
+    <script src="assets/js/autocomplete-motor-versao.js"></script>
+
+    <!-- ENHANCEMENTS: Fluxo 2 + resets + avanço automático (não-destrutivo) -->
+    <script>
+    (() => {
+      if (window.__B1_ENH__) return; window.__B1_ENH__ = true;
+      const DEBUG = false;
+
+      const $ = (s,c=document)=>c.querySelector(s);
+      const $$=(s,c=document)=>Array.from(c.querySelectorAll(s));
+
+      // Mapa
+      const map = {
+        header: $('.header'),
+        logo: $('.header .logo'),
+        btnTop: $('#ctaStart'),
+        btnHeroOrder: $('#heroOrder'),
+        btnStepsOrder: $('#stepsOrder'),
+        btnHeroPrices: $('#heroPrices'),
+
+        modal: $('#selectionModal'),
+        modalClose: $('#closeSelection'),
+        cityInput: $('#cityInput'),
+        vehicleInput: $('#vehicleInput'),
+        selectVehicleBtn: $('#selectVehicle'),
+
+        orderSection: $('#orderSection'),
+        batteryCard: $('#batteryCard'),
+
+        form: $('#orderForm'),
+        step1: $('.form-step[data-step="1"]'),
+        step2: $('.form-step[data-step="2"]'),
+        step3: $('.form-step[data-step="3"]'),
+        progress: $('.progress'),
+
+        deliveryRadios: $$('input[name="deliveryTime"]'),
+        scheduleFields: $('#scheduleFields'),
+        scheduleDate: $('#scheduleDate'),
+        scheduleTime: $('#scheduleTime'),
+
+        toStep2: $('#toStep2'),
+        toStep3: $('#toStep3'),
+
+        paymentRadios: $$('input[name="payment"]'),
+        installments: $('#installments'),
+        orderSummary: $('#orderSummary')
+      };
+
+      // Header offset
+      let headerOffset = 0;
+      const calcHeaderOffset = () => {
+        if (!map.header) return 0;
+        const cs = getComputedStyle(map.header);
+        const isFixed = ['sticky','fixed'].includes(cs.position);
+        headerOffset = isFixed ? map.header.offsetHeight : 0;
+      };
+      calcHeaderOffset();
+      window.addEventListener('resize', calcHeaderOffset);
+
+      // Helpers
+      const smoothFocus = (el) => {
+        if (!el) return;
+        el.scrollIntoView({behavior:'smooth', block:'start'});
+        setTimeout(()=>el.focus?.({preventScroll:true}), 300);
+      };
+      const show = el => el && el.classList.remove('hidden');
+      const hide = el => el && el.classList.add('hidden');
+
+      // RESET GERAL
+      const resetGeneral = () => {
+        // Fecha modal e esconde seção
+        hide(map.modal);
+        hide(map.orderSection);
+        // Campos da seleção
+        if (map.cityInput) map.cityInput.value = '';
+        if (map.vehicleInput) map.vehicleInput.value = '';
+        // Entrega
+        map.deliveryRadios?.forEach(r=>r.checked = (r.value==='45min'));
+        hide(map.scheduleFields);
+        if (map.scheduleDate) map.scheduleDate.value='';
+        if (map.scheduleTime) map.scheduleTime.value='';
+        // Form passos
+        map.form?.reset?.();
+        show(map.step1); hide(map.step2); hide(map.step3);
+        // Progress
+        $$('.progress-step', map.progress).forEach(ps=>ps.classList.remove('active'));
+        $('.progress-step[data-step="1"]', map.progress)?.classList.add('active');
+        // Cards
+        $$('#batteryCard [data-b1-tipo]').forEach(c=>{
+          c.classList.remove('is-selected');
+          c.removeAttribute('data-selected');
+          const t=c.querySelector('[data-b1="selecionar"]'); if(t) t.textContent='☐';
+        });
+        // Parcelas
+        if (map.installments) map.installments.innerHTML='';
+        // Summary
+        hide(map.orderSummary); map.orderSummary.innerHTML='';
+        // Rola topo
+        window.scrollTo({top:0, behavior:'smooth'});
+      };
+
+      // Ligações de reset
+      map.logo?.addEventListener('click', (e)=>{ e.preventDefault(); resetGeneral(); });
+      [map.btnTop, map.btnHeroOrder, map.btnStepsOrder].forEach(b=>{
+        b?.addEventListener('click',(e)=>{
+          e.preventDefault(); resetGeneral(); show(map.modal); map.cityInput?.focus({preventScroll:true});
+        });
+      });
+      map.btnHeroPrices?.addEventListener('click', (e)=>{ e.preventDefault(); show(map.modal); map.cityInput?.focus({preventScroll:true}); });
+      map.modalClose?.addEventListener('click', (e)=>{ e.preventDefault(); hide(map.modal); });
+
+      // ————— FLUXO 2: CARDS —————
+      // Regras de preço
+      const formatBRL = v => v.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+      const round2 = v => Math.round(v*100)/100;
+
+      const computePrices = (mouraBase) => {
+        const hel = round2(mouraBase * 0.97);
+        const eco = round2(hel * 0.90);
+        return { moura: mouraBase, heliar: hel, economica: eco };
+      };
+      const ranges = (p) => ({
+        moura: [round2(p.moura*0.98), round2(p.moura*1.02)],
+        heliar:[round2(p.heliar*0.97),round2(p.heliar*1.03)],
+        economica:[round2(p.economica*0.99),round2(p.economica*1.01)]
+      });
+
+      // Parcelamento com ajuste de centavos na última parcela
+      const calcParcelas = (total, n=10) => {
+        const base = Math.floor((total/n)*100)/100; // trunca
+        const parcelas = Array(n).fill(base);
+        const soma = round2(parcelas.reduce((a,b)=>a+b,0));
+        const dif = round2(total - soma);
+        parcelas[n-1] = round2(parcelas[n-1] + dif);
+        return parcelas;
+      };
+
+      // Render dos cards
+      const renderCards = (modeloTexto, baseMoura=570.00) => {
+        if (!map.batteryCard) return;
+        const prices = computePrices(baseMoura);
+        const rng = ranges(prices);
+
+        const cards = [
+          {
+            tipo:'moura', nome:'Moura', preco:prices.moura,
+            modelo:modeloTexto||'Modelo compatível',
+            amp:'60–70Ah*', garantia:'12–24 meses*',
+            media:`${formatBRL(rng.moura[0])} ~ ${formatBRL(rng.moura[1])}`,
+            beneficios:['🛠 Maior Assistência Nacional','🏭 Original de Montadora ~70%','⭐ Alta durabilidade']
+          },
+          {
+            tipo:'heliar', nome:'Heliar', preco:prices.heliar,
+            modelo:modeloTexto||'Modelo compatível',
+            amp:'60–70Ah*', garantia:'12–24 meses*',
+            media:`${formatBRL(rng.heliar[0])} ~ ${formatBRL(rng.heliar[1])}`,
+            beneficios:['🏭 Original de Montadora','🛠 Garantia Nacional','⭐ Boa durabilidade']
+          },
+          {
+            tipo:'economica', nome:'Econômica', preco:prices.economica,
+            modelo:modeloTexto||'Modelo compatível',
+            amp:'60–70Ah*', garantia:'9–12 meses*',
+            media:`${formatBRL(rng.economica[0])} ~ ${formatBRL(rng.economica[1])}`,
+            beneficios:['💰 Menor custo imediato','🛠 Garantia Local','⭐ Média durabilidade']
+          }
+        ];
+
+        const cardHTML = (c) => `
+          <article class="b1-card b1-col" data-b1-tipo="${c.tipo}">
+            <div class="b1-top">
+              <h4>${c.nome}</h4>
+              <button type="button" class="b1-hit" data-b1="selecionar" aria-label="Selecionar ${c.nome}">☐</button>
+            </div>
+            <div class="b1-preco" data-b1="preco">${formatBRL(c.preco)}</div>
+            <div class="b1-parcelas" data-b1="parcelas">10× de ${formatBRL(calcParcelas(c.preco,10)[0])}</div>
+            <div class="b1-meta">
+              <div data-b1="modelo"><strong>Modelo:</strong> ${c.modelo}</div>
+              <div data-b1="amperagem"><strong>Amperagem:</strong> ${c.amp}</div>
+              <div data-b1="garantia"><strong>Garantia:</strong> ${c.garantia}</div>
+              <div class="b1-media" data-b1="media90">📉 <span>Média 90d:</span> ${c.media}</div>
+            </div>
+            <div class="b1-benef" data-b1="beneficios">
+              <ul>${c.beneficios.map(b=>`<li>${b}</li>`).join('')}</ul>
+            </div>
+          </article>
+        `;
+
+        map.batteryCard.innerHTML = `<div class="b1-grid-3">${cards.map(cardHTML).join('')}</div>`;
+
+        // Bind seleção única + abrir Fluxo 3
+        const cardEls = $$('#batteryCard [data-b1-tipo]');
+        cardEls.forEach(card=>{
+          const hit = card.querySelector('[data-b1="selecionar"]');
+          hit?.addEventListener('click', ()=>{
+            cardEls.forEach(c=>{
+              c.classList.remove('is-selected'); c.removeAttribute('data-selected');
+              const t=c.querySelector('[data-b1="selecionar"]'); if(t) t.textContent='☐';
+            });
+            card.classList.add('is-selected'); card.setAttribute('data-selected','true');
+            hit.textContent='✔️';
+
+            // Ao selecionar, mostra Fluxo 3 e foca entrega (Etapa 2)
+            show(map.orderSection);
+            show(map.step1); hide(map.step2); hide(map.step3);
+            $$('.progress-step', map.progress).forEach(ps=>ps.classList.remove('active'));
+            $('.progress-step[data-step="1"]', map.progress)?.classList.add('active');
+
+            // parcelamento default 10x
+            fillInstallments(getSelectedPrice(), 10);
+            const firstDelivery = map.deliveryRadios?.find(r=>r.value==='45min');
+            firstDelivery && (firstDelivery.checked = true);
+            hide(map.scheduleFields);
+            // foco no primeiro campo (Nome) conforme seu roteiro
+            smoothFocus($('#name'));
+          });
+        });
+      };
+
+      // Abre modal → Selecionar veículo → Render cards e mostrar seção
+      map.selectVehicleBtn?.addEventListener('click', ()=>{
+        const cityOk = (map.cityInput?.value||'').trim().length >= 2;
+        const vehOk = (map.vehicleInput?.value||'').trim().length >= 3;
+        if (!cityOk || !vehOk){ alert('Preencha cidade e veículo.'); return; }
+        hide(map.modal);
+        renderCards(map.vehicleInput.value); // Fluxo 2
+        show(map.orderSection);
+        map.batteryCard?.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+
+      // Entrega: alterna campos de agendamento e foco
+      map.deliveryRadios?.forEach(r=>{
+        r.addEventListener('change', ()=>{
+          if (r.value==='agendar' && r.checked){
+            show(map.scheduleFields);
+            map.scheduleDate?.focus({preventScroll:true});
+            map.scheduleFields?.scrollIntoView({behavior:'smooth', block:'start'});
+          } else if (r.value==='45min' && r.checked){
+            hide(map.scheduleFields);
+          }
+        });
+      });
+
+      // Passos do formulário (1->2->3) com foco
+      map.toStep2?.addEventListener('click', ()=>{
+        hide(map.step1); show(map.step2);
+        $$('.progress-step', map.progress).forEach(ps=>ps.classList.remove('active'));
+        $('.progress-step[data-step="2"]', map.progress)?.classList.add('active');
+        smoothFocus($('#address'));
+      });
+
+      map.toStep3?.addEventListener('click', ()=>{
+        hide(map.step2); show(map.step3);
+        $$('.progress-step', map.progress).forEach(ps=>ps.classList.remove('active'));
+        $('.progress-step[data-step="3"]', map.progress)?.classList.add('active');
+        // Se crédito, popular parcelas agora (caso ainda não populado)
+        if ($('input[name="payment"]:checked')?.value==='credito' && map.installments?.options.length===0){
+          fillInstallments(getSelectedPrice(), 10);
+        }
+        smoothFocus($('#cardFlag'));
+      });
+
+      // Pagamento: mostrar/ocultar parcelas
+      map.paymentRadios?.forEach(r=>{
+        r.addEventListener('change', ()=>{
+          const isCred = r.value==='credito' && r.checked;
+          if (isCred){
+            fillInstallments(getSelectedPrice(), 10);
+            show(map.installments.closest('.field-group'));
+          } else {
+            map.installments.innerHTML='';
+            hide(map.installments.closest('.field-group'));
+          }
+          // foco CTA final
+          const submitBtn = map.form?.querySelector('button[type="submit"]');
+          submitBtn && submitBtn.focus({preventScroll:true});
+        });
+      });
+
+      // Preenche parcelas e mostra linha dinâmica N×
+      const fillInstallments = (total, n=10) => {
+        if (!map.installments) return;
+        const ns = Array.from({length:n}, (_,i)=>i+1);
+        const parts = calcParcelas(total, n);
+        map.installments.innerHTML = ns.map((v,idx)=>{
+          const p = parts[idx];
+          return `<option value="${v}">${v}× de ${formatBRL(p)}</option>`;
+        }).join('');
+      };
+
+      const getSelectedPrice = () => {
+        const sel = $('#batteryCard [data-b1-tipo].is-selected');
+        if (!sel) {
+          // fallback: Moura base
+          return 570.00;
+        }
+        const precoEl = sel.querySelector('[data-b1="preco"]');
+        if (!precoEl) return 570.00;
+        const num = Number(precoEl.textContent.replace(/[^\d,.-]/g,'').replace('.','').replace(',','.'));
+        return isNaN(num) ? 570.00 : num;
+      };
+
+      // Form submit → WhatsApp (mantém Fluxo 3 visível)
+      map.form?.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        // coleta
+        const cidade = (map.cityInput?.value||'').trim();
+        const veiculo = (map.vehicleInput?.value||'').trim();
+        const selCard = $('#batteryCard [data-b1-tipo].is-selected');
+        if (!selCard){ alert('Selecione uma bateria.'); return; }
+        const tipo = selCard?.getAttribute('data-b1-tipo')||'';
+        const preco = getSelectedPrice();
+        const entrega = $('input[name="deliveryTime"]:checked')?.value==='agendar'
+          ? `Agendada em ${map.scheduleDate?.value||''} às ${map.scheduleTime?.value||''}`
+          : 'Imediata (até 45min)';
+        const nome = $('#name')?.value||'';
+        const tel = $('#phone')?.value||'';
+        const email = $('#email')?.value||'';
+        const end = $('#address')?.value||'';
+        const num = $('#number')?.value||'';
+        const bai = $('#neighborhood')?.value||'';
+        const comp = $('#complement')?.value||'';
+        const pag = $('input[name="payment"]:checked')?.value||'';
+        const parc = map.installments?.value || '1';
+
+        const msg =
+`*Baterias 1 – Solicitação de Entrega*
+• Cidade: ${cidade}
+• Veículo: ${veiculo}
+• Bateria: ${tipo.toUpperCase()} (${formatBRL(preco)})
+• Entrega: ${entrega}
+• Cliente: ${nome} – ${tel} – ${email}
+• Endereço: ${end}, ${num} – ${bai} (${comp})
+• Pagamento: ${pag}${pag==='credito' ? ' em '+parc+'x':''}`;
+
+        const url = 'https://wa.me/5511970901461?text='+encodeURIComponent(msg);
+        window.open(url, '_blank', 'noopener');
+
+        // mantém Fluxo 3 visível (não rola pro topo)
+        show(map.step3); $('.progress-step[data-step="3"]', map.progress)?.classList.add('active');
+      });
+
+      // Inicialização
+      const init = () => {
+        // Estado inicial limpo
+        resetGeneral();
+      };
+      init();
+    })();
+    </script>
+
+    <!-- (Opcional) mantenha o arquivo externo vazio ou substitua por este bloco -->
+    <script src="assets/js/enhancements.js"></script>
+  </body>
 </html>
